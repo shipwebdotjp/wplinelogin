@@ -1,0 +1,5 @@
+{
+    "require": {
+        "osapon/oauth2-line": "dev-master@dev"
+    }
+}

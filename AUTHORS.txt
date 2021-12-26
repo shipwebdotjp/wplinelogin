@@ -1,0 +1,5 @@
+This plugin is using the sdks below:
+
+line-bot-sdk-php 
+line
+https://github.com/line/line-bot-sdk-php
