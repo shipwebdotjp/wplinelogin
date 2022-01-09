@@ -1,0 +1,6 @@
+div.error{
+    padding: .5em 1em;
+}
+.ui-tabs-nav a:focus{
+    box-shadow:none;
+}
