@@ -135,6 +135,14 @@ class linelogin {
             'prefix' => '2',
             'name' => 'ページ設定',
             'fields' => array(
+                'login_mode' => array(
+                    'type' => 'select',
+                    'label' => 'ログイン方法',
+                    'required' => true,
+                    'list' => array('lineonly' => 'LINEログインのみ','both' => 'WordPressでのログインとLINEログインを併用'),
+                    'default' => 'both',
+                    'hint' => 'LINEログインのみでログインさせるか、WordPressアカウントでのログインも併用するかどうかの設定です。',
+                ), 
                 'login_url' => array(
                     'type' => 'text',
                     'label' => 'ログインページURL',
@@ -575,20 +583,19 @@ class linelogin {
                 exit;
             
             } elseif (empty($req_vars['code'])) {
+                // codeのないリクエスト=ログイン開始
                 //認可要求時のオプションパラメーター
                 $option = [
                     'bot_prompt' => 'normal',
                 ];
-                // codeのないリクエスト=ログイン開始
                 $authUrl = $provider->getAuthorizationUrl($option);
                 $_SESSION[self::SESSION_KEY__STATES] = $provider->getState();   //Stateをセッションに保持
                 $_SESSION['lastpage'] = $req_uri;                   //リンク元をセッションに保持
                 self::logging('auth: '.$authUrl);
                 header('Location: ' . $authUrl);                    //LINE認証URLへリダイレクトさせる
-                exit;
-            
+                exit();            
             } elseif (empty($req_vars['state']) || ($req_vars['state'] !== $_SESSION[self::SESSION_KEY__STATES])) { //stateがないか、stateが異なる場合はエラー
-                unset($_SESSION[self::SESSION_KEY__STATES]);
+                unset($_SESSION[self::SESSION_KEY__STATES]);    //セッションのstateを削除
                 $redirect_to = add_query_arg(array(
                     self::PARAMETER_KEY__STATUS => 'error',
                     self::PARAMETER_KEY__CODE => 'invalid_state',
@@ -630,10 +637,7 @@ class linelogin {
                     if ( ! is_user_logged_in() ) {
                         //未ログインの場合はそのユーザーでログイン
                         //ログイン処理
-                        wp_clear_auth_cookie();
-                        wp_set_current_user ( $user_id );
-                        wp_set_auth_cookie  ( $user_id );
-                        do_action( 'wp_login', $user->user_login, $user );
+                        self::do_user_login($user_id, $user);
                         $redirect_to = get_site_url(null, $this->ini['home_url']);
                     }else{
                         //ログイン済みの場合
@@ -676,16 +680,52 @@ class linelogin {
                     // 連携されていない場合は連携する
                     //Wordpressユーザーのメタ情報にLINEユーザーIDを追加
                     if ( ! is_user_logged_in() ) {
-                        //未ログインの場合はcookieにLINE IDを登録してからログインページ／登録ページへリダイレクト
-                        $encrypted_line_user_data = self::encrypt(json_encode($line_user_data), $this->ini['encrypt_password']);   //LINEユーザーIDの暗号化
-                        setcookie (self::COOKIE_KEY__LINEID, $encrypted_line_user_data, time() + 60 * 60,'/',"",TRUE,TRUE);   //Cookieにセット
-                        $next_code = $_SESSION['lastpage'] == 'linelogin' ? 'goto_login' : 'goto_regist';
-                        $next_url = $_SESSION['lastpage'];
-                        $redirect_to = add_query_arg(array(
-                            self::PARAMETER_KEY__STATUS => 'info',
-                            self::PARAMETER_KEY__CODE => $next_code,
-                            self::PARAMETER_KEY__NEXT => $next_url,
-                        ), get_site_url(null, $this->ini['login_url']));
+                        if($this->ini['login_mode'] == "lineonly"){
+                            // LINE Login Only Mode -> Create User & Login & Link
+                            $user_name = self::make_user_name($line_user_data['user_id']);
+                            $user_password = wp_generate_password( 12, false );
+                            $display_name = $line_user_data['name'];
+                            $userdata = array(
+                                'user_login'  =>  $user_name,
+                                'user_pass'   =>  $user_password,
+                                'display_name' => $display_name,
+                            );
+                            
+                            $user_id = wp_insert_user( $userdata ) ;
+                            
+                            // ユーザー登録が成功した場合
+                            if ( ! is_wp_error( $user_id ) ) {
+                                self::logging("User auto created: ID=".$user_id);
+                                self::update_user_meta( $user_id, $line_user_data );    //WPユーザーとLINE ID連携
+                                $user = get_user_by( 'id', $user_id );
+                                self::do_user_login($user_id, $user);   //ログイン処理
+                                $redirect_to = add_query_arg(array(
+                                    self::PARAMETER_KEY__STATUS => 'info',
+                                    self::PARAMETER_KEY__CODE => 'link_complete',
+                                    self::PARAMETER_KEY__NEXT => 'linelink',
+                                ),get_site_url(null, $this->ini['message_url']));
+                            }else{
+                                self::logging("User auto create failed.".$user_id->get_error_message());
+                                $redirect_to = add_query_arg(array(
+                                    self::PARAMETER_KEY__STATUS => 'error',
+                                    self::PARAMETER_KEY__CODE => 'goto_regist',
+                                    self::PARAMETER_KEY__NEXT => 'linelink',
+                                ),get_site_url(null, $this->ini['message_url']));
+                            }
+
+                        }else{
+                            //未ログインの場合はcookieにLINE IDを登録してからログインページ／登録ページへリダイレクト
+                            $encrypted_line_user_data = self::encrypt(json_encode($line_user_data), $this->ini['encrypt_password']);   //LINEユーザーIDの暗号化
+                            setcookie (self::COOKIE_KEY__LINEID, $encrypted_line_user_data, time() + 60 * 60,'/',"",TRUE,TRUE);   //Cookieにセット
+                            $next_code = $_SESSION['lastpage'] == 'linelogin' ? 'goto_login' : 'goto_regist';
+                            $next_url = $_SESSION['lastpage'];
+                            $redirect_to = add_query_arg(array(
+                                self::PARAMETER_KEY__STATUS => 'info',
+                                self::PARAMETER_KEY__CODE => $next_code,
+                                self::PARAMETER_KEY__NEXT => $next_url,
+                            ), get_site_url(null, $this->ini['login_url']));                            
+                        }
+
                         wp_safe_redirect( $redirect_to );
                         exit();
                     }else{
@@ -708,6 +748,11 @@ class linelogin {
             //連係解除リンク
             if ( is_user_logged_in() ) {
                 self::delete_user_meta( get_current_user_id());
+                if($this->ini['login_mode'] == "lineonly"){
+                    // LINE Login Only Mode -> Delete User
+                    require_once(ABSPATH.'wp-admin/includes/user.php' );
+                    wp_delete_user(get_current_user_id());
+                }
                 $redirect_to = add_query_arg(array(
                     self::PARAMETER_KEY__STATUS => 'info',
                     self::PARAMETER_KEY__CODE => 'unlink_complete',
@@ -826,10 +871,10 @@ class linelogin {
      */
 	function login_message_shortcode_handler_function($atts, $content = null, $tag = ''){
         // $ini = self::getini();
-        $status = in_array($_GET[self::PARAMETER_KEY__STATUS], ["error","info"], true) ? $_GET[self::PARAMETER_KEY__STATUS] : '';
-        $code = $_GET[self::PARAMETER_KEY__CODE];
-        $next_url = self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_url'] : "";
-        $next_label = self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_label'] : "";
+        $status = isset($_GET[self::PARAMETER_KEY__STATUS]) && in_array($_GET[self::PARAMETER_KEY__STATUS], ["error","info"], true) ? $_GET[self::PARAMETER_KEY__STATUS] : '';
+        $code = isset($_GET[self::PARAMETER_KEY__CODE]) && $_GET[self::PARAMETER_KEY__CODE] ? $_GET[self::PARAMETER_KEY__CODE] : '';
+        $next_url = isset($_GET[self::PARAMETER_KEY__NEXT]) && self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_url'] : "";
+        $next_label = isset($_GET[self::PARAMETER_KEY__NEXT]) && self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_label'] : "";
         $req_uri = get_query_var('pagename');
         if($code){
             $output = "<div class='line-login-message {$status}'>".($this->ini[$code.'_message'] ? $this->ini[$code.'_message'] : '')."</div>";
@@ -858,6 +903,8 @@ class linelogin {
 				'pictureUrl' => $line_profile_data['picture'],
 			);
 			update_user_meta( $user_id, self::META_KEY__LINEcONNECT, $line_user_data);
+            //リッチメニューをセット
+			do_action('line_link_richmenu', $user_id);
         }
         self::logging('update_user_meta: user_id='.$user_id.' line_user_id:'.$line_user_id);
     }
@@ -872,6 +919,7 @@ class linelogin {
             $secret_prefix = substr($this->ini['messagingapi_channel_secret'],0,4);
             $user_meta_line = get_user_meta($user_id, self::META_KEY__LINEcONNECT, true);
             if($user_meta_line && $user_meta_line[$secret_prefix]){
+                do_action('line_unlink_richmenu', $user_id, $secret_prefix);
                 unset($user_meta_line[$secret_prefix]);
                 if(empty($user_meta_line)){
                     //ほかに連携しているチャネルがなければメタデータ削除
@@ -895,4 +943,28 @@ class linelogin {
         }
 
     }
+
+
+    // LINE USER ID から login_user 作成
+    function make_user_name($user_id){
+        
+        $user_name = substr($user_id,2,6);
+        $offset = 1;
+        while($user_exists = username_exists( $user_name )){
+            $user_name = substr($user_id,2 + $offset, 6);
+            $offset++;
+        }
+
+        return $user_name;
+    }
+
+    //ログイン処理
+    function do_user_login($user_id, $user){
+        wp_clear_auth_cookie();
+        wp_set_current_user ( $user_id );
+        wp_set_auth_cookie  ( $user_id );
+        do_action( 'wp_login', $user->user_login, $user );
+        
+    }
+
 }
