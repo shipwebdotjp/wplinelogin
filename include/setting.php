@@ -99,8 +99,12 @@ EOM;
                         $size =  isset($option_details['size'])&&$option_details['size'] ? 'size="'.$option_details['size'].'" ':'';
                         echo <<< EOM
                         <p>
+EOM;
+                        if($option_details['type'] != 'hidden'){
+                            echo <<< EOM
                             <label for="{$options['param']}" {$error_class}>{$option_details['label']}：</label>
 EOM;
+                        }
                         switch($option_details['type']){
                             case 'select':
                             case 'multiselect':
@@ -117,6 +121,9 @@ EOM;
                             case 'spinner':
                                 // スピナーを出力
                                 echo "<input type='number' name='{$options['param']}' value='{$options['value']}' {$required} {$size} />{$hint}";
+                                break;
+                            case 'hidden':
+                                echo "<input type='hidden' name='{$options['param']}' value='{$options['value']}' {$required} />";
                                 break;
                             default:
                                 //テキストボックス出力
