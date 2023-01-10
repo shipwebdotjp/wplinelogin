@@ -4,7 +4,7 @@
   Plugin Name: WP LINE Login
   Plugin URI: 
   Description: Add Login with LINE feature.
-  Version: 1.2.0
+  Version: 1.2.1
   Author: shipweb
   Author URI: https://blog.shipweb.jp/archives/702
   License: GPLv3
@@ -22,7 +22,7 @@ class linelogin {
     /**
      * このプラグインのバージョン
      */
-    const VERSION = '1.2.0';
+    const VERSION = '1.2.1';
 
     /**
      * このプラグインのID：Shipweb Line Login
@@ -499,13 +499,13 @@ class linelogin {
             // 初期設定を保存する関数をフック
             add_action('admin_init', ['lineloginSetting', 'save_settings']);
         }
-        if($this->ini['directlink'] == "on"){
-            //ユーザープロフィールにLINEユーザーIDを追加
-            add_action( 'edit_user_profile', [$this,'register_line_user_id_profilebox']  );
-            add_action( 'show_user_profile', [$this,'register_line_user_id_profilebox']  );
-            //ユーザープロフィールにLINEユーザーIDを保存
-            add_action( 'profile_update', [$this,'update_line_user_id_profilebox']  );        
-        }
+        
+        //ユーザープロフィールにLINEユーザーIDを追加
+        add_action( 'edit_user_profile', [$this,'register_line_user_id_profilebox']  );
+        add_action( 'show_user_profile', [$this,'register_line_user_id_profilebox']  );
+        //ユーザープロフィールにLINEユーザーIDを保存
+        add_action( 'profile_update', [$this,'update_line_user_id_profilebox']  );        
+        
     }
 
     /**
@@ -1134,6 +1134,7 @@ class linelogin {
                     <span class="description">Uから始まる英数字33ケタ</span>
                 </td>
             </tr>
+            <?php if($this->ini['directlink'] == "on"){ ?>
             <tr>
                 <th>LINEログインリンク</th>
                 <td>
@@ -1141,6 +1142,7 @@ class linelogin {
                     <span class="description">このリンク経由でLINEログインを行う事で連携が行えます。</span>
                 </td>
             </tr>
+            <?php } ?>
         </table>
     <?php
         
