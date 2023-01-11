@@ -4,7 +4,7 @@
   Plugin Name: WP LINE Login
   Plugin URI: 
   Description: Add Login with LINE feature.
-  Version: 1.2.1
+  Version: 1.2.2
   Author: shipweb
   Author URI: https://blog.shipweb.jp/archives/702
   License: GPLv3
@@ -22,7 +22,7 @@ class linelogin {
     /**
      * このプラグインのバージョン
      */
-    const VERSION = '1.2.1';
+    const VERSION = '1.2.2';
 
     /**
      * このプラグインのID：Shipweb Line Login
@@ -648,13 +648,16 @@ class linelogin {
             } elseif (empty($req_vars['code'])) {
                 // codeのないリクエスト=ログイン開始
                 //認可要求時のオプションパラメーター
+                $scopes = [
+                    'openid',
+                    'profile',
+                ];
+                if($this->ini['login_mode'] == "lineonly"){
+                    $scopes[] = 'email';
+                }
                 $option = [
                     'bot_prompt' => 'normal',
-                    'scope' => [
-                        'openid',
-                        'profile',
-                        'email',
-                    ],
+                    'scope' => $scopes,
                 ];
                 $authUrl = $provider->getAuthorizationUrl($option);
                 $_SESSION[self::SESSION_KEY__STATES] = $provider->getState();   //Stateをセッションに保持
@@ -863,12 +866,13 @@ class linelogin {
                             $encrypted_line_user_data = self::encrypt(json_encode($line_user_data), $this->ini['encrypt_password']);   //LINEユーザーIDの暗号化
                             setcookie (self::COOKIE_KEY__LINEID, $encrypted_line_user_data, time() + 60 * 60,'/',"",TRUE,TRUE);   //Cookieにセット
                             $next_code = $_SESSION['lastpage'] == self::MODE_LOGIN ? 'goto_login' : 'goto_regist';
-                            $next_url = isset($_SESSION['lastpage']) && self::ENDPOINTS[$_SESSION['lastpage']] ? $this->ini[self::ENDPOINTS[$_SESSION['lastpage']].'_url'] : "";
+                            $next_slug = isset($_SESSION['lastpage']) && isset(self::ENDPOINTS[$_SESSION['lastpage']]) ? self::ENDPOINTS[$_SESSION['lastpage']] : self::MODE_LOGIN;
+
                             $redirect_to = add_query_arg(array(
                                 self::PARAMETER_KEY__STATUS => 'info',
                                 self::PARAMETER_KEY__CODE => $next_code,
-                                self::PARAMETER_KEY__NEXT => $next_url,
-                            ), self::get_url($next_url));                            
+                                self::PARAMETER_KEY__NEXT => $next_slug,
+                            ), self::get_url($next_slug));                            
                         }
 
                         wp_safe_redirect( $redirect_to );
@@ -989,12 +993,11 @@ class linelogin {
                 }
             }
         }else{
-            $req_uri = get_query_var('pagename');
-            $next_url = isset($_GET[self::PARAMETER_KEY__NEXT]) && self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_url'] : "";
+            $next_slug = isset($_GET[self::PARAMETER_KEY__NEXT]) && self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_url'] : "";
             $url = add_query_arg(array(
                 self::PARAMETER_KEY__MODE => self::MODE_LOGIN,
             ),self::get_url('callback'));
-            if($next_url == "" || !is_page(rtrim($next_url, '/'))){
+            if($next_slug == "" || !is_page(rtrim($next_slug, '/'))){
                 $output = "<a href='".$url."' class='line-login-link login'>".$atts['login_label']."</a>";
             }else{
                 $output = "";
@@ -1014,17 +1017,17 @@ class linelogin {
         $_GET[self::PARAMETER_KEY__STATUS] : '';
         // 表示するメッセージコード
         $code = isset($_GET[self::PARAMETER_KEY__CODE]) && $_GET[self::PARAMETER_KEY__CODE] ? $_GET[self::PARAMETER_KEY__CODE] : '';
-        // 次の移動先URL
-        $next_url = isset($_GET[self::PARAMETER_KEY__NEXT]) && self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? 
-        $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_url'] : "";
+        // 次の移動先タイプ
+        $next_type = isset($_GET[self::PARAMETER_KEY__NEXT]) && isset(self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]]) ? self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] : "";
+        // 次の移動先スラッグ
+        $next_slug =  $next_type && isset($this->ini[$next_type.'_url']) ? $this->ini[$next_type.'_url'] : "";
         // 次の移動先リンクラベル
-        $next_label = isset($_GET[self::PARAMETER_KEY__NEXT]) && self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? 
-        $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_label'] : "";
+        $next_label = isset($_GET[self::PARAMETER_KEY__NEXT]) && self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]] ? $this->ini[self::ENDPOINTS[$_GET[self::PARAMETER_KEY__NEXT]].'_label'] : "";
 
         // $req_uri = get_query_var('pagename');
         if($code){
             $output = "<div class='line-login-message {$status}'>".($this->ini[$code.'_message'] ? $this->ini[$code.'_message'] : '')."</div>";
-            $output .= $next_url && !is_page(rtrim($next_url, '/')) ? "<div class='line-login-nexturl'><a href='". self::get_url($next_url) ."'>".$next_label."</a></div>" : "";
+            $output .= $next_slug && !is_page(rtrim($next_slug, '/')) ? "<div class='line-login-nexturl'><a href='". self::get_url($next_type) ."'>".$next_label."</a></div>" : "";
             return $output;          
         }
         return;
@@ -1115,6 +1118,9 @@ class linelogin {
 
     //プロフィール画面にLINEユーザーID追加
     function register_line_user_id_profilebox($user){
+        if(!current_user_can('manage_options')){
+            return false;
+        }
         if(is_object($user)){
             $line_user_id = get_user_meta( $user->ID, self::META_KEY__LINE, true );
         }else{
