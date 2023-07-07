@@ -1,6 +1,8 @@
 test.php
 config.php
+.env
 node_modules/
 log/
 deploy
 Makefile
+release.sh

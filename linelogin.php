@@ -1,19 +1,20 @@
 <?php
 
 /*
-  Plugin Name: WP LINE Login
-  Plugin URI: 
-  Description: Add Login with LINE feature.
-  Version: 1.2.3
-  Author: shipweb
-  Author URI: https://blog.shipweb.jp/archives/702
-  License: GPLv3
+Plugin Name: WP LINE Login
+Plugin URI: 
+Description: Add Login with LINE feature.
+Version: 1.2.4
+Author: shipweb
+Author URI: https://blog.shipweb.jp/archives/702
+License: GPLv3
 */
 
-/*  Copyright 2021 shipweb (email : shipwebdotjp@gmail.com)
-    https://www.gnu.org/licenses/gpl-3.0.txt
-
+/*
+	Copyright 2021 shipweb (email : shipwebdotjp@gmail.com)
+	https://www.gnu.org/licenses/gpl-3.0.txt
 */
+
 add_action('init', 'linelogin::instance');
 require_once(plugin_dir_path(__FILE__) . 'include/setting.php');
 
@@ -22,7 +23,7 @@ class linelogin {
 	/**
 	 * このプラグインのバージョン
 	 */
-	const VERSION = '1.2.3';
+	const VERSION = '1.2.4';
 
 	/**
 	 * このプラグインのID：Shipweb Line Login
