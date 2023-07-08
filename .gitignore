@@ -5,4 +5,3 @@ node_modules/
 log/
 deploy
 Makefile
-release.sh

@@ -1,0 +1,278 @@
+# WP LINE Login
+WordPressにLINEアカウントでログインする機能を追加するためのプラグインです。
+## 機能
+* WordPressにLINEアカウントを使用してログイン可能（ソーシャルログイン機能をWordpressに追加）
+* 新規ユーザー、既存ユーザー両方と連携可能
+* 「WP LINE Connect」とも連携可能
+
+## 仕様
+
+### 新規ユーザーの連携
+
+LINEログイン　→　WP新規ユーザー登録　→　連携
+
+#### ユーザー登録について
+
+- LINE Loginプラグインにはユーザー登録機能は付いていないため、[Ultimate Member](https://ja.wordpress.org/plugins/ultimate-member/)や[Simple Membership](https://ja.wordpress.org/plugins/simple-membership/)などの会員サイト構築用プラグインをお使いください。
+- ユーザー登録処理を自前で行う場合はユーザー登録後に[user_registerアクションフック](https://developer.wordpress.org/reference/hooks/user_register/)を呼び出してください。
+
+### 既存ユーザーの連携
+
+- LINEログイン　→　Wordpressログイン　→　連携
+- 既にログイン済みなら連携メニューよりLINEログイン　→　連携
+- ユーザー専用ログインリンクから　→　LINEログイン →　連携
+
+### インストール方法
+
+WordPressのプラグインディレクトリには掲載していないため、ZIPファイルをダウンロードして管理画面のプラグインページよりアップロードしてください。
+
+- [GitHub/wplinelogin](https://github.com/shipwebdotjp/wplinelogin/releases/)より最新のリリースのAssets部分のリンクより「wplinelogin.zip」をダウンロードしてください。
+- WordPressの管理画面へログインし、「プラグイン」メニューから「新規追加」を選び、「プラグインをアップロード」をクリックします。
+- 「ファイルの選択」から、ダウンロードしておいたZIPファイルを選択し、「今すぐインストール」をクリックします。
+- インストールが完了したら、プラグイン一覧画面より「 WP LINE Login」を有効化します。
+
+## 初期設定
+
+### 固定ページの作成
+
+#### LINEログイン用固定ページの作成
+
+以下のスラッグで固定ページを作成してください。内容はなくて構いません。
+
+- linelogin
+
+#### LINEログインメッセージ表示用ページの作成
+
+もう一つ、下記のスラッグで固定ページを作成し、ショートコード`[line_login_message]`を貼り付けてください。
+
+- linemessage
+
+### LINE Developersでの設定
+
+#### LINEログインチャネルの作成
+
+1. あらかじめ[LINE Developers](https://developers.line.biz/)にて、LINEログイン チャネルを作成しておいてください。
+2. チャネルIDとチャネルシークレットをメモしておきます。
+
+#### コールバックURLの設定
+
+LINE Developersの「LINEログイン設定」を開き、「コールバックURL」に先ほど作成した「linelogin」固定ページのパーマリンクを追加してください。
+
+パーマリンク設定が「投稿名」(%postname%)であればこのようになります。
+
+```
+WordPressサイトURL/linelogin/
+```
+
+例）https://example.com/linelogin/
+
+パーマリンク設定が「基本」の場合、`http://example.com/?page_id=1`のようになります。
+
+### WordPress側でのLINE loginプラグイン設定
+
+1. 「設定」→「LINE Login」メニューからLINE Login設定ページを開きます。
+2. メモしておいたチャネルIDと、チャネルシークレットをチャネルタブの各入力欄に入力します。
+3. 暗号化シークレットを適当な英数字に変更します。
+4. ページ設定タブを開いて、ご自分のサイトに合わせて各ページのスラッグを設定します。
+5. 設定を保存します。
+
+## 使用方法
+
+LINEログインリンクをサイトに追加します。ショートコードを使用してLINEログインリンクを表示することもできます。
+
+### LINEログイン用ショートコード
+
+```
+[line_login_link]
+```
+
+このショートコードには2つの役割があります。
+
+1. LINEログイン用のリンクを表示
+2. WPユーザーのLINEアカウントとの連携状態と連携・連係解除リンクの表示
+
+ログイン状態に応じて表示される内容が異なります。未ログインならログイン用リンクが、ログイン中なら、連携状態と、連携・連係解除リンクが表示されます。
+
+ショートコードの表示フローはこのようなものとなります。
+
+![](https://blog.shipweb.jp/wp-content/uploads/2022/01/%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%9C%E3%82%BF%E3%83%B3.png)
+
+ショートコードを表示すると良いページ
+
+- ログインページ（ログインフォームの下部）
+- ユーザーの登録情報編集ページ
+
+#### LINEログイン用リンクURL
+
+ショートコードを使用せずに「linelogin」固定ページのパーマリンクにクエリパラメータを付加したURLを利用することでもLINEログインや連携が行えます。
+
+LINEログインを開始するために4種類のパラメーターが用意されています。違いは下記のとおりです。
+
+##### ログイン用
+
+このリンクを通じて未連携のLINEアカウントでログインした場合、WPのログインページへ遷移します。
+
+- ?sll_mode=login（デフォルト）
+
+##### 新規登録用
+
+このリンクを通じて未連携のLINEアカウントでログインした場合、新規登録ページへ遷移します。
+
+- ?sll_mode=signup
+- ?sll_mode=register
+
+##### LINE連携／連係解除用
+
+すでにログイン済みのユーザー用に、LINE連携を開始または解除を行うために使用します。連携・連係解除後はメッセージページへ遷移します。
+
+- ?sll_mode=link
+- ?sll_mode=unlink
+
+### パラメータによる文言の変更
+
+リンクや連携状態表示のメッセージ、ボタンラベルをショートコードのパラメータで指定できます。
+
+#### login_label
+
+ログインリンクのラベル
+
+#### unlinked_label
+
+LINE連携されていない場合の状態表示。デフォルトは「LINE 連携されていません」
+
+#### unlinked_button
+
+LINE連携されていない場合に表示される連携開始ボタンラベル。デフォルトは「連携」
+
+#### linked_label
+
+LINE連携されている場合の状態表示。デフォルトは「LINE 連携済みです」
+
+#### linked_button
+
+LINE連携されている場合に表示される連携解除ボタンラベル。デフォルトは「連携解除」
+
+#### サンプル
+
+```
+[line_login_link login_label="LINE Login" unlinked_label="You are not linked." linked_label="You are already linked." unlinked_button="LINK" linked_button="UNLINK"]
+```
+
+#### 出力HTMLサンプル
+
+```
+//ログインリンク
+<a href='https://example.com/linelogin/' class='line-login-link login'>[login_label]</a>
+
+//連携状態表示: 未連携
+<span class='line-login-label unlinked'>[unlinked_label]</span>
+<a href='https://example.com/linelink/' class='line-login-link unlinked'>[unlinked_button]</a>
+
+//連携状態表示: 連携済み
+<span class='line-login-label linked'>[linked_label]</span>
+<a href='https://example.com/lineunlink/' class='line-login-link linked'>[linked_button]</a>
+```
+
+### LINE連携完了時のメッセージ表示ショートコード
+
+下記のショートコードがLINE連携完了時のメッセージや、未連携の場合、WPユーザーでのログインを促すメッセージなどを表示するために使用されます。
+
+```
+[line_login_message]
+```
+
+最初に作成したLINEログインメッセージ固定ページ(linemessage)に加えて下記のページにもこのショートコードを追加しておくと、WPユーザーでのログインが必要なときに適切なメッセージが表示されるためユーザーにとってわかりやすくなります。
+
+- ログインページ
+- 新規ユーザー登録ページ
+
+## ログインフローチャート
+
+![](https://blog.shipweb.jp/wp-content/uploads/2022/01/LINE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%95%E3%83%AD%E3%83%BC-569x1024.png)
+
+## ログイン時リダイレクト
+
+URLに`redirect_to`パラメーターが含まれたログインページからLINEログインを行った後、`redirect_to`で指定されたURLへとリダイレクトします。
+
+未ログイン状態でログインが必要なページへアクセス　→　ログインページへリダイレクト　→　LINEログイン　→　元のアクセス先URLへ遷移するという流れになります。
+
+## 管理者による手動連携
+
+LINEユーザーID(Uから始まる33桁の英数字、LINEユーザー名ではありません)がわかる場合、特定のWordPressユーザーをそのLINEユーザーと手動で連携させることが可能です。
+
+連携させたいWordPressユーザーの情報編集ページを管理画面のユーザー一覧ページから開き、LINEログイン連携セクションのLINEユーザーID欄に、連携させたいLINEアカウントのLINEユーザーIDを入力して保存します。
+
+LINEユーザーIDは、自分のIDであればLINE DevelopersのあなたのユーザーIDから取得できます。その他_Messaging API_のWebhookを利用して取得したり、プレミアムアカウントや認証アカウントの場合はユーザー一覧を取得するエンドポイントから取得することもできます。
+
+## ダイレクト連携リンク
+
+この機能を利用するにはその他の設定で、**ユーザー専用ログインリンクの使用：使用する**に設定が必要です。
+
+管理画面のユーザー情報編集ページ（/wp-admin/user-edit.php）より、そのユーザー専用のLINEログインリンクを取得可能です。個別に、LINEメッセージなどでユーザーへ送信し、そのリンクをタップしてもらう事でWordPressのID/パスワードを入力せずに連携が可能です。
+
+このLINEログインリンクを通してLINEログインを行った場合、WordPressに未ログインの場合でもWordPressへのログインなしで、ログインしたLINEユーザーと連携されます。
+
+- 既に他のWordPressユーザーと連携済みのLINEアカウントでログインした場合  
+    →　LINE連携されるWordPressユーザーは変更されません
+- リンクの有効期限  
+    →　なし
+- リンクの無効化方法  
+    →　なし（使用しないに設定することで一括で停止することは可能）
+
+## スクリーンショット
+
+### スマートフォン
+
+#### ログインリンク表示例
+
+![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-4.png)
+
+#### ログイン画面
+
+スマートフォン版LINEにログインしている状態の場合、認可画面へそのまま遷移するためログイン画面は表示されません。（一瞬LINEアプリへ移動し、ログイン中の表示がなされます）
+
+#### 認可画面
+
+![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-2.png)
+
+### PC
+
+#### ログイン画面
+
+ブラウザのCookieに以前ログインしたLINEアカウント情報が残っている場合は、そのアカウントでログインするシングルサインオン画面が表示されます。ブラウザにそのCookieがない場合は、メールアドレスとパスワードでのログイン画面が表示されます。
+
+##### Cookieなし（メールアドレスとパスワードでのログイン）
+
+![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image.png)
+
+##### Cookieあり（シングルサインオン）
+
+![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-1.png)
+
+#### 認可画面
+
+![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-3.png)
+
+## カスタマイズ
+
+LINE Login設定ページより設定が行えます。
+
+メッセージの内容や各種ページのURLを変更することが可能です。
+
+その他複雑なカスタマイズをご希望の場合は有償で承りますので[こちら](https://blog.shipweb.jp/contact)からご連絡ください。
+
+## 必要動作環境
+
+- WordPress 4.9.13以上
+
+## 制作者
+
+- シップ
+
+## 謝辞
+
+- 使用してくださっている方々。
+
+## ライセンス
+
+- GPLv3
