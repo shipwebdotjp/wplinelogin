@@ -3,7 +3,7 @@ Contributors: shipweb
 Tags: line, userid, login, 連携
 Requires at least: 4.9.13
 Tested up to: 5.8
-Stable tag: 1.2.5
+Stable tag: 1.3.0
 License: GPL v3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 7.3
@@ -23,9 +23,12 @@ Requires PHP: 7.3
 == Customize ==
 
 == More infomation == 
-https://blog.shipweb.jp/archives/702
+https://blog.shipweb.jp/wplinelogin/
 
 == Changelog ==
+
+= 1.3.0 =
+2023-09-22 Now English version available. 
 
 = 1.2.3 =
 2023-07-07 Add action hook for update LINE user meta 

@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: WP LINE Login
-Plugin URI: 
+Plugin URI: https://blog.shipweb.jp/wplinelogin/
 Description: Add Login with LINE feature.
-Version: 1.2.5
+Version: 1.3.0
 Author: shipweb
-Author URI: https://blog.shipweb.jp/archives/702
+Author URI: https://blog.shipweb.jp/about
 License: GPLv3
 */
 
@@ -15,20 +15,27 @@ License: GPLv3
 	https://www.gnu.org/licenses/gpl-3.0.txt
 */
 
-add_action('init', 'linelogin::instance');
+//add_action('init', 'linelogin::instance');
+
 require_once(plugin_dir_path(__FILE__) . 'include/setting.php');
+require_once(plugin_dir_path(__FILE__) . 'include/const.php');
 
 class linelogin {
 
 	/**
 	 * このプラグインのバージョン
 	 */
-	const VERSION = '1.2.5';
+	const VERSION = '1.3.0';
 
 	/**
 	 * このプラグインのID：Shipweb Line Login
 	 */
 	const PLUGIN_ID = 'sll';
+
+	/**
+	 * このプラグインの名前：Line Login
+	 */
+	const PLUGIN_NAME = 'linelogin';
 
 	/**
 	 * PREFIX
@@ -110,304 +117,7 @@ class linelogin {
 	 */
 	const SLUG__SETTINGS_FORM = self::PLUGIN_ID . '-settings-form';
 
-	const SETTINGS_OPTIONS = array(
-		'channel' => array(
-			'prefix' => '1',
-			'name' => 'チャネル',
-			'fields' => array(
-				'login_channel_id' => array(
-					'type' => 'text',
-					'label' => 'ログインチャネルID',
-					'required' => true,
-					'default' => '',
-					'hint' => 'LINEログインチャネルの基本情報のページに記されている数字です。',
-					'regex' => '/^[0-9]+$/',
-					'size' => 20,
-				),
-				'login_channel_secret' => array(
-					'type' => 'text',
-					'label' => 'ログインチャネルシークレット',
-					'required' => true,
-					'default' => '',
-					'hint' => 'LINEログインチャネルの基本情報のページに記されている英数字です。',
-					'regex' => '/^[a-z0-9]{30,}$/',
-					'size' => 33,
-				),
-				'messagingapi_channel_secret' => array(
-					'type' => 'text',
-					'label' => 'Messaging APIチャネルシークレット',
-					'required' => false,
-					'default' => '',
-					'hint' => 'LINE Connectと連携する場合、LINE Messaging APIチャネルのシークレットを入力してください。',
-					'regex' => '/^[a-z0-9]{30,}$/',
-					'size' => 33,
-				),
-				'encrypt_password' => array(
-					'type' => 'text',
-					'label' => '暗号化シークレット',
-					'required' => true,
-					'default' => 'PleaseChangeHere',
-					'hint' => 'Cookieの暗号化に使用するシークレットを半角英数字で適宜設定してください。',
-					'regex' => '/^[0-9a-zA-Z]+$/',
-				),
-			),
-		),
-		'page' => array(
-			'prefix' => '2',
-			'name' => 'ページ設定',
-			'fields' => array(
-				'login_mode' => array(
-					'type' => 'hidden',
-					'label' => 'ログイン方法',
-					'required' => true,
-					'list' => array('lineonly' => 'LINEログインのみ', 'both' => 'WordPressでのログインとLINEログインを併用'),
-					'default' => 'both',
-					'hint' => 'LINEログインのみでログインさせるか、WordPressアカウントでのログインも併用するかどうかの設定です。',
-				),
-				'login_url' => array(
-					'type' => 'text',
-					'label' => 'ログインページ',
-					'required' => false,
-					'default' => 'login',
-					'hint' => 'ログインページのスラッグを入力してください。'
-				),
-				'register_url' => array(
-					'type' => 'text',
-					'label' => '新規登録ページ',
-					'required' => false,
-					'default' => 'register',
-					'hint' => '新規登録ページのスラッグを入力してください。'
-				),
-				'home_url' => array(
-					'type' => 'text',
-					'label' => 'ユーザーホーム',
-					'required' => false,
-					'default' => 'user',
-					'hint' => 'LINEログイン後に表示するページのスラッグを入力してください。空欄の場合はサイトホームへ遷移します。'
-				),
-				'user_url' => array(
-					'type' => 'text',
-					'label' => 'ユーザーアカウントページ',
-					'required' => false,
-					'default' => 'account',
-					'hint' => 'LINE連携完了後に表示するページのスラッグを入力してください。一般的にユーザーのLINE連携状態を表示しているページです。'
-				),
-				'message_url' => array(
-					'type' => 'text',
-					'label' => 'メッセージページ',
-					'required' => true,
-					'default' => 'linemessage',
-					'hint' => 'メッセージの表示用ページを指定したスラッグで作成し、ショートコード[line_login_message]を表示してください。'
-				),
-				'callback_url' => array(
-					'type' => 'text',
-					'label' => 'LINEログインページ',
-					'required' => true,
-					'default' => 'linelogin',
-					'hint' => 'LINEログインに使用するページです。指定したスラッグで固定ページを作成してください。内容は必要ありません。'
-				),
-			),
-		),
-		'message' => array(
-			'prefix' => '3',
-			'name' => 'メッセージ',
-			'fields' => array(
-				'login_label' => array(
-					'type' => 'text',
-					'label' => 'LINEログインリンクラベル',
-					'required' => false,
-					'default' => 'LINEログイン',
-					'hint' => 'LINEログインリンクのラベルです。'
-				),
-				'normal_login_label' => array(
-					'type' => 'text',
-					'label' => '通常ログインリンクラベル',
-					'required' => false,
-					'default' => 'ログイン画面へ',
-					'hint' => '通常の方法でのログインページへのリンクラベルです。'
-				),
-				'register_label' => array(
-					'type' => 'text',
-					'label' => '新規登録ラベル',
-					'required' => false,
-					'default' => '新規登録画面へ',
-					'hint' => '新規登録ページへのリンクラベルです。'
-				),
-				'home_label' => array(
-					'type' => 'text',
-					'label' => 'ユーザーホームラベル',
-					'required' => false,
-					'default' => 'ホーム',
-					'hint' => 'ホームへのリンクラベルです。'
-				),
-				'user_label' => array(
-					'type' => 'text',
-					'label' => 'アカウントホームラベル',
-					'required' => false,
-					'default' => 'アカウントページへ',
-					'hint' => 'ユーザーアカウントページへのリンクラベルです。'
-				),
-				'access_denied_message' => array(
-					'type' => 'text',
-					'label' => 'ログインキャンセル時',
-					'required' => false,
-					'default' => 'LINEログインがキャンセルされました。',
-					'hint' => 'LINEログイン画面に移行したもののキャンセルされた際のメッセージです。',
-					'size' => 60,
-				),
-				'auth_error_message' => array(
-					'type' => 'text',
-					'label' => '認証エラー時',
-					'required' => false,
-					'default' => 'LINE認証中にエラーが発生しました。',
-					'hint' => 'LINE認証中にエラーが発生した場合のメッセージです。',
-					'size' => 60,
-				),
-				'invalid_state_message' => array(
-					'type' => 'text',
-					'label' => '連携エラー時',
-					'required' => false,
-					'default' => 'LINE連携中にエラーが発生しました。',
-					'hint' => 'LINE連携中にエラーが発生した場合のメッセージです。',
-					'size' => 60,
-				),
-				'userdetails_error_message' => array(
-					'type' => 'text',
-					'label' => 'ユーザー情報取得失敗時',
-					'required' => false,
-					'default' => 'LINE認証中にエラーが発生しました。時間をおいて再度お試しください。',
-					'hint' => 'LINE認証後ユーザー情報取得の際にエラーが発生した場合のメッセージです。',
-					'size' => 60,
-				),
-				'duplicate_error_message' => array(
-					'type' => 'text',
-					'label' => 'LINEアカウント重複時',
-					'required' => false,
-					'default' => 'このLINEアカウントは既に連携済みです。連係解除を行ってから再度お試しください。',
-					'hint' => 'LINEアカウントがすでに他のユーザーと連携されている場合のメッセージです。',
-					'size' => 60,
-				),
-				'overwrite_error_message' => array(
-					'type' => 'text',
-					'label' => 'WordPressアカウント重複時',
-					'required' => false,
-					'default' => 'このアカウントには既に別のLINEアカウントが連携済みです。連係解除を行ってから再度お試しください。',
-					'hint' => 'ダイレクトリンクを利用して連携しようとしたWPアカウントがすでに他のLINEアカウントと連携されている場合のメッセージです。',
-					'size' => 60,
-				),
-				'already_linked_message' => array(
-					'type' => 'text',
-					'label' => '己連携時',
-					'required' => false,
-					'default' => 'このLINEアカウントと既に連携済みです。',
-					'hint' => 'LINE連携済みなのに同じLINEアカウントで連携しようとした場合のメッセージです。',
-					'size' => 60,
-				),
-				'goto_login_message' => array(
-					'type' => 'text',
-					'label' => '未ログイン時（ログインリンク）',
-					'required' => false,
-					'default' => 'このLINEアカウントはまだ連携されていません。当サイトのユーザー名またはメールアドレスとパスワードでログインすることで連携が行われます。',
-					'hint' => 'モード"login"を利用し、LINE連携されていないLINEアカウントでログインした場合のメッセージです。',
-					'size' => 60,
-				),
-				'goto_regist_message' => array(
-					'type' => 'text',
-					'label' => '未ログイン時（新規登録リンク）',
-					'required' => false,
-					'default' => 'このLINEアカウントはまだ連携されていません。当サイトへ会員登録することで連携が行われます。',
-					'hint' => 'モード"register"を利用し、LINE連携されていないLINEアカウントでログインした場合のメッセージです。',
-					'size' => 60,
-				),
-				'link_complete_message' => array(
-					'type' => 'text',
-					'label' => '連携完了時',
-					'required' => false,
-					'default' => 'LINE連携が完了しました。',
-					'hint' => 'LINE連携が完了した際のメッセージです。',
-					'size' => 60,
-				),
-				'unlink_complete_message' => array(
-					'type' => 'text',
-					'label' => '連係解除時',
-					'required' => false,
-					'default' => 'LINE連携を解除しました。',
-					'hint' => 'LINE連携解除が完了した際のメッセージです。',
-					'size' => 60,
-				),
-				'link_changed_message' => array(
-					'type' => 'text',
-					'label' => '連係アカウント変化時',
-					'required' => false,
-					'default' => '連携しているLINEアカウントが変更されました。',
-					'hint' => '連携しているLINEアカウントが別のLINEアカウントに変更になった場合のメッセージです。',
-					'size' => 60,
-				),
-				'nofriend_error_message' => array(
-					'type' => 'text',
-					'label' => '友だちでない場合',
-					'required' => false,
-					'default' => 'LINE連携するにはLINE公式アカウントへの友だち登録が必要です。',
-					'hint' => '友だちのみ連携を許可する設定で、LINE連携しようとしたユーザーが友だちでない場合のメッセージです。',
-					'size' => 60,
-				),
-			),
-		),
-		'other' => array(
-			'prefix' => '4',
-			'name' => 'その他',
-			'fields' => array(
-				'logging' => array(
-					'type' => 'select',
-					'label' => 'ログを記録',
-					'required' => true,
-					'list' => array('on' => 'する', 'off' => 'しない'),
-					'default' => 'off',
-					'hint' => 'LINEログインのログを記録するかどうかの設定です。',
-				),
-				'log_file' => array(
-					'type' => 'text',
-					'label' => 'ログファイルパス',
-					'required' => false,
-					'default' => '/var/log/linelogin.log',
-					'hint' => '/ログファイルのパスです。',
-					'size' => 40,
-				),
-				'directlink' => array(
-					'type' => 'select',
-					'label' => 'ユーザー専用ログインリンクの使用',
-					'required' => true,
-					'list' => array('on' => '使用する', 'off' => '使用しない'),
-					'default' => 'off',
-					'hint' => '個々のユーザー専用のLINEログインリンクを発行し、ログインせずに連携できるようにするかどうかの設定です。',
-				),
-				'bot_prompt' => array(
-					'type' => 'select',
-					'label' => '友だち追加オプションの表示',
-					'required' => true,
-					'list' => array('off' => '表示しない', 'normal' => '認可画面に表示', 'aggressive' => '認可画面の後に表示'),
-					'default' => 'off',
-					'hint' => 'LINE公式アカウントを友だち追加するオプションをユーザーのログイン時に表示するかどうかの設定です。',
-				),
-				'initial_amr_display' => array(
-					'type' => 'select',
-					'label' => 'デフォルトのログイン方式',
-					'required' => true,
-					'list' => array('off' => 'メールアドレスとパスワード', 'lineqr' => 'QRコード'),
-					'default' => 'off',
-					'hint' => '自動ログインができない場合、最初に表示するログイン方法の設定です。',
-				),
-				'isFriendonly' => array(
-					'type' => 'select',
-					'label' => '友だちのみ連携を許可する',
-					'required' => true,
-					'list' => array('off' => 'いいえ', 'on' => 'はい'),
-					'default' => 'off',
-					'hint' => 'LINE連携を行えるのを公式アカウントの友だちのみに設定するかどうかです。',
-				),
-			),
-		),
-	);
+	// const SETTINGS_OPTIONS = 
 
 	/**
 	 * パラメーターのPREFIX
@@ -533,37 +243,43 @@ class linelogin {
 	 * コンストラクタ
 	 */
 	function __construct() {
-		// オプションの読み込み
-		$this->ini = $this->get_all_options();
+		add_action('init', function () {
+			// オプションの読み込み
+			$this->ini = $this->get_all_options();
 
-		//ログイン時、LINEアカウント連携
-		add_action('wp_login', [$this, 'redirect_account_link'], 10, 2);
-		//新規登録時、LINEアカウント連携
-		add_action('user_register', [$this, 'register_account_link'], 10, 2);
-		//LINEログインURLにアクセスされたときLINEログイン画面へリダイレクト
-		add_action('template_redirect',  [$this, 'redirect_to_line'], 10, 2);
-		//ログインボタンショートコードのフック
-		add_shortcode('line_login_link',  [$this, 'login_link_shortcode_handler_function']);
-		//メッセージ表示ショートコードのフック
-		add_shortcode('line_login_message',  [$this, 'login_message_shortcode_handler_function']);
-		// 管理画面を表示中、且つ、ログイン済、且つ、特権管理者or管理者の場合
-		if (is_admin() && is_user_logged_in() && (is_super_admin() || current_user_can('administrator'))) {
-			// 管理画面のトップメニューページを追加
-			add_action('admin_menu', ['lineloginSetting', 'set_plugin_menu']);
-			// 管理画面各ページの最初、ページがレンダリングされる前に実行するアクションに、
-			// 初期設定を保存する関数をフック
-			add_action('admin_init', ['lineloginSetting', 'save_settings']);
-		}
+			//ログイン時、LINEアカウント連携
+			add_action('wp_login', [$this, 'redirect_account_link'], 10, 2);
+			//新規登録時、LINEアカウント連携
+			add_action('user_register', [$this, 'register_account_link'], 10, 2);
+			//LINEログインURLにアクセスされたときLINEログイン画面へリダイレクト
+			add_action('template_redirect',  [$this, 'redirect_to_line'], 10, 2);
+			//ログインボタンショートコードのフック
+			add_shortcode('line_login_link',  [$this, 'login_link_shortcode_handler_function']);
+			//メッセージ表示ショートコードのフック
+			add_shortcode('line_login_message',  [$this, 'login_message_shortcode_handler_function']);
+			// 管理画面を表示中、且つ、ログイン済、且つ、特権管理者or管理者の場合
+			if (is_admin() && is_user_logged_in() && (is_super_admin() || current_user_can('administrator'))) {
+				// 管理画面のトップメニューページを追加
+				add_action('admin_menu', ['lineloginSetting', 'set_plugin_menu']);
+				// 管理画面各ページの最初、ページがレンダリングされる前に実行するアクションに、
+				// 初期設定を保存する関数をフック
+				add_action('admin_init', ['lineloginSetting', 'save_settings']);
+			}
 
-		//ユーザープロフィールにLINEユーザーIDを追加
-		add_action('edit_user_profile', [$this, 'register_line_user_id_profilebox']);
-		add_action('show_user_profile', [$this, 'register_line_user_id_profilebox']);
-		//ユーザープロフィールにLINEユーザーIDを保存
-		add_action('profile_update', [$this, 'update_line_user_id_profilebox']);
-		//ユーザーのMETAにLINEユーザーIDとプロフィール情報を登録(LINE Connect連携用)
-		add_action('line_login_update_user_meta', [$this, 'line_login_update_user_meta'], 10, 3);
-		//ユーザーのMETAからLINEユーザーIDとプロフィール情報を削除(LINE Connect連携用)
-		add_action('line_login_delete_user_meta', [$this, 'line_login_delete_user_meta'], 10, 2);
+			//ユーザープロフィールにLINEユーザーIDを追加
+			add_action('edit_user_profile', [$this, 'register_line_user_id_profilebox']);
+			add_action('show_user_profile', [$this, 'register_line_user_id_profilebox']);
+			//ユーザープロフィールにLINEユーザーIDを保存
+			add_action('profile_update', [$this, 'update_line_user_id_profilebox']);
+			//ユーザーのMETAにLINEユーザーIDとプロフィール情報を登録(LINE Connect連携用)
+			add_action('line_login_update_user_meta', [$this, 'line_login_update_user_meta'], 10, 3);
+			//ユーザーのMETAからLINEユーザーIDとプロフィール情報を削除(LINE Connect連携用)
+			add_action('line_login_delete_user_meta', [$this, 'line_login_delete_user_meta'], 10, 2);
+		});
+		//テキストドメイン呼出し
+		load_plugin_textdomain(self::PLUGIN_NAME, false, dirname(plugin_basename(__FILE__)) . '/languages');
+
+		lineloginConst::initialize();
 	}
 
 	/**
@@ -618,7 +334,7 @@ class linelogin {
 	 */
 	static function get_all_options() {
 		$options = get_option(self::OPTION_KEY__SETTINGS); //オプションを取得
-		foreach (self::SETTINGS_OPTIONS as $tab_name => $tab_details) {
+		foreach (lineloginConst::$settings_option as $tab_name => $tab_details) {
 			//flatten
 			foreach ($tab_details['fields'] as $option_key => $option_details) {
 				if (!isset($options[$option_key])) {
@@ -637,7 +353,7 @@ class linelogin {
 		if (isset($options[$option_name])) {
 			return $options[$option_name];
 		}
-		foreach (self::SETTINGS_OPTIONS as $tab_name => $tab_details) {
+		foreach (lineloginConst::$settings_option as $tab_name => $tab_details) {
 			//flatten
 			foreach ($tab_details['fields'] as $option_key => $option_details) {
 				if ($option_name == $option_key) {
@@ -1070,10 +786,10 @@ class linelogin {
 	function login_link_shortcode_handler_function($atts, $content = null, $tag = '') {
 		$atts = wp_parse_args($atts, array(
 			'login_label'  => $this->ini['login_label'],
-			'unlinked_label'  => 'LINE 連携されていません',
-			'linked_label'  => 'LINE 連携済みです',
-			'unlinked_button'  => '連携',
-			'linked_button'  => '連携解除',
+			'unlinked_label'  => __('Unlinked to LINE', linelogin::PLUGIN_NAME),
+			'linked_label'  => __('Linked to LINE', linelogin::PLUGIN_NAME),
+			'unlinked_button'  => __('Link', linelogin::PLUGIN_NAME),
+			'linked_button'  => __('Unlink', linelogin::PLUGIN_NAME),
 		));
 		if (is_user_logged_in()) {
 			$user_id = get_current_user_id(); //現在のユーザーを取得
@@ -1220,10 +936,8 @@ class linelogin {
 		}
 	}
 
-
 	// LINE USER ID から login_user 作成
 	function make_user_name($user_id) {
-
 		$user_name = substr($user_id, 2, 6);
 		$offset = 1;
 		while ($user_exists = username_exists($user_name)) {
@@ -1258,46 +972,46 @@ class linelogin {
 			//self::PARAMETER_KEY__MODE => self::MODE_LINK,
 		), self::get_url('callback'))
 ?>
-		<h3>LINEログイン連携</h3>
+		<h3><?php echo __('LINE Login Connect', linelogin::PLUGIN_NAME) ?></h3>
 		<table class="form-table">
 			<tr>
-				<th><label for="lineid">LINEユーザーID</label></th>
+				<th><label for="lineid"><?php echo __('LINE User ID', linelogin::PLUGIN_NAME) ?></label></th>
 				<td>
 					<input type="text" class="regular-text" name="lineid" value="<?php echo $line_user_id; ?>" id="lineid" /><br />
-					<span class="description">Uから始まる英数字33ケタ</span>
+					<span class="description"><?php echo __('33 alphanumeric characters starting with "U".', linelogin::PLUGIN_NAME) ?></span>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="linedisplayName">LINE表示名</label></th>
+				<th><label for="linedisplayName"><?php echo __('LINE Display Name', linelogin::PLUGIN_NAME) ?></label></th>
 				<td>
 					<?php echo !empty($line_profile['displayName']) ? $line_profile['displayName'] : ""; ?>
 				</td>
 			<tr>
-				<th><label for="linepictureUrl">LINEプロフィール画像</label></th>
+				<th><label for="linepictureUrl"><?php echo __('LINE Profile Picture', linelogin::PLUGIN_NAME) ?></label></th>
 				<td>
 					<?php echo !empty($line_profile['pictureUrl']) ? "<img src='{$line_profile['pictureUrl']}' width=200>" : ""; ?>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="lineemail">LINE登録メールアドレス</label></th>
+				<th><label for="lineemail"><?php echo __('LINE Mailaddress', linelogin::PLUGIN_NAME) ?></label></th>
 				<td>
 					<?php echo !empty($line_profile['email']) ? $line_profile['email'] : ""; ?>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="lineisFriend">LINE友だち</label></th>
+				<th><label for="lineisFriend"><?php echo __('LINE Friend', linelogin::PLUGIN_NAME) ?></label></th>
 				<td>
-					<?php echo (!empty($line_profile['isFriend']) ? "はい" : "いいえ") ?>
+					<?php echo (!empty($line_profile['isFriend']) ? __('Yes', linelogin::PLUGIN_NAME) : __('No', linelogin::PLUGIN_NAME)) ?>
 				</td>
 			</tr>
 			<?php if ($this->ini['directlink'] == "on") { ?>
 				<tr>
-					<th>LINEログインリンク</th>
+					<th><?php echo __('LINE Login Link', linelogin::PLUGIN_NAME) ?></th>
 					<td>
 						<input type="text" class="regular-text" name="lineloginlink" value="<?php echo $lineloginlink; ?>" id="lineloginlink" />
-						<button type="button" class="button secondary" onclick="document.getElementById('lineloginlink').select();document.execCommand('copy');">Copy</button>
+						<button type="button" class="button secondary" onclick="document.getElementById('lineloginlink').select();document.execCommand('copy');"><?php echo __('Copy', linelogin::PLUGIN_NAME) ?></button>
 						<br />
-						<span class="description">このリンク経由でLINEログインを行う事で連携が行えます。</span>
+						<span class="description"><?php echo __('User can link to LINE by logging in via this link.', linelogin::PLUGIN_NAME) ?></span>
 					</td>
 				</tr>
 			<?php } ?>
@@ -1331,3 +1045,5 @@ class linelogin {
 		return false;
 	}
 }
+
+$GLOBALS['linelogin'] = new linelogin;

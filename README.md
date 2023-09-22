@@ -1,278 +1,275 @@
+[日本語版](README-ja.md)
 # WP LINE Login
-WordPressにLINEアカウントでログインする機能を追加するためのプラグインです。
-## 機能
-* WordPressにLINEアカウントを使用してログイン可能（ソーシャルログイン機能をWordpressに追加）
-* 新規ユーザー、既存ユーザー両方と連携可能
-* 「WP LINE Connect」とも連携可能
+This plugin is for adding the ability to log in with your LINE account to WordPress.
+## Features
+* Feature to log in to WordPress using your LINE account. Add social login functionality to Wordpress.
+* Can work with both new and existing users
+* Can integrate with LINE Connect
 
-## 仕様
+## Specification
 
-### 新規ユーザーの連携
+### Linking new users
+LINE Login → Sign up as a new WP user → Complete linking.
 
-LINEログイン　→　WP新規ユーザー登録　→　連携
+#### About User Registration
 
-#### ユーザー登録について
+- The LINE Login plugin does not include user registration functionality. Therefore, please consider using membership site building plugins such as [Ultimate Member](https://ja.wordpress.org/plugins/ultimate-member/) or [Simple Membership](https://ja.wordpress.org/plugins/simple-membership/).
+- If you plan to handle user registration on your own, please make sure to call the [user_register action hook](https://developer.wordpress.org/reference/hooks/user_register/) after the user registration process is completed.
 
-- LINE Loginプラグインにはユーザー登録機能は付いていないため、[Ultimate Member](https://ja.wordpress.org/plugins/ultimate-member/)や[Simple Membership](https://ja.wordpress.org/plugins/simple-membership/)などの会員サイト構築用プラグインをお使いください。
-- ユーザー登録処理を自前で行う場合はユーザー登録後に[user_registerアクションフック](https://developer.wordpress.org/reference/hooks/user_register/)を呼び出してください。
+### Linking Existing Users
 
-### 既存ユーザーの連携
+- LINE Login → WordPress Login → Link Account
+- If you are already logged in, you can link your account by going to the linking menu and selecting LINE Login → Link Account.
+- You can also link your account by using the user-specific login link → LINE Login → Link Account.
 
-- LINEログイン　→　Wordpressログイン　→　連携
-- 既にログイン済みなら連携メニューよりLINEログイン　→　連携
-- ユーザー専用ログインリンクから　→　LINEログイン →　連携
+### Installation Instructions
 
-### インストール方法
+Since this plugin is not available in the WordPress plugin directory, you will need to download the ZIP file and upload it from your WordPress admin panel.
 
-WordPressのプラグインディレクトリには掲載していないため、ZIPファイルをダウンロードして管理画面のプラグインページよりアップロードしてください。
+- Download the "wplinelogin.zip" file from the latest release in the Assets section on [GitHub/wplinelogin](https://github.com/shipwebdotjp/wplinelogin/releases/).
+- Log in to your WordPress admin panel, go to the "Plugins" menu, and select "Add New."
+- Click on "Upload Plugin."
+- Click on "Choose File" and select the ZIP file you downloaded earlier. Then click "Install Now."
+- After the installation is complete, activate "WP LINE Login" from the list of plugins in the admin panel.
 
-- [GitHub/wplinelogin](https://github.com/shipwebdotjp/wplinelogin/releases/)より最新のリリースのAssets部分のリンクより「wplinelogin.zip」をダウンロードしてください。
-- WordPressの管理画面へログインし、「プラグイン」メニューから「新規追加」を選び、「プラグインをアップロード」をクリックします。
-- 「ファイルの選択」から、ダウンロードしておいたZIPファイルを選択し、「今すぐインストール」をクリックします。
-- インストールが完了したら、プラグイン一覧画面より「 WP LINE Login」を有効化します。
+## Initial Setup
 
-## 初期設定
+### Creating Pages
 
-### 固定ページの作成
+#### Creating a Page for LINE Login
 
-#### LINEログイン用固定ページの作成
+Please create a static page with the slug `linelogin`. The content of this page can be empty.
 
-以下のスラッグで固定ページを作成してください。内容はなくて構いません。
+#### Creating a Page for LINE Login Messages
 
-- linelogin
+Create another page with the slug `linemessage`, and insert the shortcode `[line_login_message]` into its content.
 
-#### LINEログインメッセージ表示用ページの作成
+### Configuration in LINE Developers
 
-もう一つ、下記のスラッグで固定ページを作成し、ショートコード`[line_login_message]`を貼り付けてください。
+#### Creating a LINE Login Channel
 
-- linemessage
+1. Firstly, create a LINE Login channel in [LINE Developers](https://developers.line.biz/).
+2. Make sure to note down the Channel ID and Channel Secret.
 
-### LINE Developersでの設定
+#### Setting the Callback URL
 
-#### LINEログインチャネルの作成
+In LINE Developers, open the "LINE Login" settings, and add the permalink of the "linelogin" page you created earlier to the "Callback URL" field.
 
-1. あらかじめ[LINE Developers](https://developers.line.biz/)にて、LINEログイン チャネルを作成しておいてください。
-2. チャネルIDとチャネルシークレットをメモしておきます。
-
-#### コールバックURLの設定
-
-LINE Developersの「LINEログイン設定」を開き、「コールバックURL」に先ほど作成した「linelogin」固定ページのパーマリンクを追加してください。
-
-パーマリンク設定が「投稿名」(%postname%)であればこのようになります。
+If your permalink structure is set to "Post name" (%postname%), it should look like this:
 
 ```
-WordPressサイトURL/linelogin/
+WordPress Site URL/linelogin/
 ```
 
-例）https://example.com/linelogin/
+For example: https://example.com/linelogin/
 
-パーマリンク設定が「基本」の場合、`http://example.com/?page_id=1`のようになります。
+If your permalink structure is set to "Plain," it will look like this: `http://example.com/?page_id=1`.
 
-### WordPress側でのLINE loginプラグイン設定
+### LINE Login Plugin Configuration in WordPress
 
-1. 「設定」→「LINE Login」メニューからLINE Login設定ページを開きます。
-2. メモしておいたチャネルIDと、チャネルシークレットをチャネルタブの各入力欄に入力します。
-3. 暗号化シークレットを適当な英数字に変更します。
-4. ページ設定タブを開いて、ご自分のサイトに合わせて各ページのスラッグを設定します。
-5. 設定を保存します。
+1. Navigate to the "Settings" → "LINE Login" menu to open the LINE Login settings page.
+2. Enter the Channel ID and Channel Secret that you previously noted into their respective input fields in the "Channel" tab.
+3. Change the Encryption Secret to a suitable alphanumeric value.
+4. Open the "Page Settings" tab and configure the slugs for each page according to your website.
+5. Save your settings.
 
-## 使用方法
+## Usage
 
-LINEログインリンクをサイトに追加します。ショートコードを使用してLINEログインリンクを表示することもできます。
+You can add LINE Login links to your site, and you can also display LINE Login links using shortcodes.
 
-### LINEログイン用ショートコード
+### LINE Login Shortcode
 
 ```
 [line_login_link]
 ```
 
-このショートコードには2つの役割があります。
+This shortcode serves two purposes:
 
-1. LINEログイン用のリンクを表示
-2. WPユーザーのLINEアカウントとの連携状態と連携・連係解除リンクの表示
+1. Displaying a link for LINE Login.
+2. Displaying the linking status between the WP user and their LINE account, as well as the link for linking/unlinking.
 
-ログイン状態に応じて表示される内容が異なります。未ログインならログイン用リンクが、ログイン中なら、連携状態と、連携・連係解除リンクが表示されます。
+The content displayed depends on the user's login status. If the user is not logged in, the login link is displayed. If the user is logged in, it will display the linking status and the link for linking/unlinking.
 
-ショートコードの表示フローはこのようなものとなります。
+The shortcode display flow looks like this:
 
-![](https://blog.shipweb.jp/wp-content/uploads/2022/01/%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%9C%E3%82%BF%E3%83%B3.png)
+![Shortcode Flow](https://blog.shipweb.jp/wp-content/uploads/2022/01/%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%9C%E3%82%BF%E3%83%B3.png)
 
-ショートコードを表示すると良いページ
+Pages where it's recommended to display the shortcode:
 
-- ログインページ（ログインフォームの下部）
-- ユーザーの登録情報編集ページ
+- Login page (below the login form)
+- User profile editing page
 
-#### LINEログイン用リンクURL
+#### LINE Login Link URLs
 
-ショートコードを使用せずに「linelogin」固定ページのパーマリンクにクエリパラメータを付加したURLを利用することでもLINEログインや連携が行えます。
+You can perform LINE Login and linking without using the shortcode by appending query parameters to the permalink of the "linelogin" page.
 
-LINEログインを開始するために4種類のパラメーターが用意されています。違いは下記のとおりです。
+There are four types of parameters available to initiate LINE Login, each serving a different purpose:
 
-##### ログイン用
+##### Login
 
-このリンクを通じて未連携のLINEアカウントでログインした場合、WPのログインページへ遷移します。
+If a user logs in with an unlinked LINE account through this link, they will be redirected to the WordPress login page.
 
-- ?sll_mode=login（デフォルト）
+- ?sll_mode=login (Default)
 
-##### 新規登録用
+##### Signup (New Registration)
 
-このリンクを通じて未連携のLINEアカウントでログインした場合、新規登録ページへ遷移します。
+If a user logs in with an unlinked LINE account through this link, they will be redirected to the sign up page.
 
 - ?sll_mode=signup
 - ?sll_mode=register
 
-##### LINE連携／連係解除用
+##### LINE Linking/Unlinking
 
-すでにログイン済みのユーザー用に、LINE連携を開始または解除を行うために使用します。連携・連係解除後はメッセージページへ遷移します。
+This is used for users who are already logged in to initiate or unlink their LINE account. After linking or unlinking, they will be redirected to the message page.
 
 - ?sll_mode=link
 - ?sll_mode=unlink
 
-### パラメータによる文言の変更
+### Customizing Text Using Parameters
 
-リンクや連携状態表示のメッセージ、ボタンラベルをショートコードのパラメータで指定できます。
+You can customize the text for links, linking status messages, and button labels using parameters in the shortcode.
 
 #### login_label
 
-ログインリンクのラベル
+Label for the login link.
 
 #### unlinked_label
 
-LINE連携されていない場合の状態表示。デフォルトは「LINE 連携されていません」
+Status message when LINE is not linked. Default is "Unlinked to LINE"
 
 #### unlinked_button
 
-LINE連携されていない場合に表示される連携開始ボタンラベル。デフォルトは「連携」
+Label for the button that appears when LINE is not linked. Default is "Link."
 
 #### linked_label
 
-LINE連携されている場合の状態表示。デフォルトは「LINE 連携済みです」
+Status message when LINE is linked. Default is "Linked to LINE."
 
 #### linked_button
 
-LINE連携されている場合に表示される連携解除ボタンラベル。デフォルトは「連携解除」
+Label for the button that appears when LINE is linked. Default is "Unlink."
 
-#### サンプル
+#### Example
 
 ```
 [line_login_link login_label="LINE Login" unlinked_label="You are not linked." linked_label="You are already linked." unlinked_button="LINK" linked_button="UNLINK"]
 ```
 
-#### 出力HTMLサンプル
+#### Output HTML example
 
 ```
-//ログインリンク
+//login link
 <a href='https://example.com/linelogin/' class='line-login-link login'>[login_label]</a>
 
-//連携状態表示: 未連携
+//Display status: Unlinked to LINE
 <span class='line-login-label unlinked'>[unlinked_label]</span>
 <a href='https://example.com/linelink/' class='line-login-link unlinked'>[unlinked_button]</a>
 
-//連携状態表示: 連携済み
+//Display status: Linked to LINE
 <span class='line-login-label linked'>[linked_label]</span>
 <a href='https://example.com/lineunlink/' class='line-login-link linked'>[linked_button]</a>
 ```
 
-### LINE連携完了時のメッセージ表示ショートコード
+### LINE Linking Completion Message Shortcode
 
-下記のショートコードがLINE連携完了時のメッセージや、未連携の場合、WPユーザーでのログインを促すメッセージなどを表示するために使用されます。
+The following shortcode is used to display messages upon the completion of LINE linking and to prompt users to log in with their WordPress accounts if they are not linked to LINE:
 
 ```
 [line_login_message]
 ```
 
-最初に作成したLINEログインメッセージ固定ページ(linemessage)に加えて下記のページにもこのショートコードを追加しておくと、WPユーザーでのログインが必要なときに適切なメッセージが表示されるためユーザーにとってわかりやすくなります。
+In addition to adding this shortcode to the LINE Login Message page (linemessage) you created initially, adding it to the following pages will make it easier for users to understand when they need to log in with their WordPress accounts:
 
-- ログインページ
-- 新規ユーザー登録ページ
+- Login page
+- New user sign up(registration) page
 
-## ログインフローチャート
+## Login Flowchart
 
-![](https://blog.shipweb.jp/wp-content/uploads/2022/01/LINE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%95%E3%83%AD%E3%83%BC-569x1024.png)
+![Login Flowchart](https://blog.shipweb.jp/wp-content/uploads/2022/01/LINE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%95%E3%83%AD%E3%83%BC-569x1024.png)
 
-## ログイン時リダイレクト
+## Login Redirection
 
-URLに`redirect_to`パラメーターが含まれたログインページからLINEログインを行った後、`redirect_to`で指定されたURLへとリダイレクトします。
+When you initiate LINE Login from a login page with the `redirect_to` parameter in the URL, it will redirect to the URL specified in `redirect_to` after LINE Login is completed.
 
-未ログイン状態でログインが必要なページへアクセス　→　ログインページへリダイレクト　→　LINEログイン　→　元のアクセス先URLへ遷移するという流れになります。
+The flow goes as follows: Access a page that requires login while not logged in → Redirect to the login page → Perform LINE Login → Redirect to the original access destination URL.
 
-## 管理者による手動連携
+## Manual Linking by Administrators
 
-LINEユーザーID(Uから始まる33桁の英数字、LINEユーザー名ではありません)がわかる場合、特定のWordPressユーザーをそのLINEユーザーと手動で連携させることが可能です。
+If you know the LINE User ID (a 33-character alphanumeric string starting with "U," not the LINE username), you can manually link a specific WordPress user to that LINE User ID.
 
-連携させたいWordPressユーザーの情報編集ページを管理画面のユーザー一覧ページから開き、LINEログイン連携セクションのLINEユーザーID欄に、連携させたいLINEアカウントのLINEユーザーIDを入力して保存します。
+To do this, open the information editing page for the WordPress user you want to link from the user list page in the admin panel. In the LINE Login Linking section, enter the LINE User ID of the LINE account you want to link and save it.
 
-LINEユーザーIDは、自分のIDであればLINE DevelopersのあなたのユーザーIDから取得できます。その他_Messaging API_のWebhookを利用して取得したり、プレミアムアカウントや認証アカウントの場合はユーザー一覧を取得するエンドポイントから取得することもできます。
+You can obtain the LINE User ID from your LINE Developers account if it's your own ID. For other cases, you can obtain it using the Messaging API's webhook or, for premium or authenticated accounts, from the user list retrieval endpoint.
 
-## ダイレクト連携リンク
+## Direct Linking URL
 
-この機能を利用するにはその他の設定で、**ユーザー専用ログインリンクの使用：使用する**に設定が必要です。
+To use this feature, you must have the setting **Use user-specific login link: Enabled** in other settings.
 
-管理画面のユーザー情報編集ページ（/wp-admin/user-edit.php）より、そのユーザー専用のLINEログインリンクを取得可能です。個別に、LINEメッセージなどでユーザーへ送信し、そのリンクをタップしてもらう事でWordPressのID/パスワードを入力せずに連携が可能です。
+You can obtain a user-specific LINE Login link from the user information editing page in the admin panel (/wp-admin/user-edit.php). You can send this link individually to users via LINE messages or other means. Users can click the link to establish a connection without entering their WordPress ID/password.
 
-このLINEログインリンクを通してLINEログインを行った場合、WordPressに未ログインの場合でもWordPressへのログインなしで、ログインしたLINEユーザーと連携されます。
+When a user performs LINE Login through this LINE Login link, even if they are not logged in to WordPress, they will be linked to the logged-in LINE User.
 
-- 既に他のWordPressユーザーと連携済みのLINEアカウントでログインした場合  
-    →　LINE連携されるWordPressユーザーは変更されません
-- リンクの有効期限  
-    →　なし
-- リンクの無効化方法  
-    →　なし（使用しないに設定することで一括で停止することは可能）
+- If a LINE account that is already linked to another WordPress user logs in:
+  → The WordPress user linked to the LINE account will not change.
+- Link expiration:
+  → None
+- Deactivation method for links:
+  → None (You can deactivate them in bulk by setting them to "Not in use")
 
-## スクリーンショット
+## Screenshots
 
-### スマートフォン
+### Mobile
 
-#### ログインリンク表示例
+#### Login Link Display Example
 
 ![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-4.png)
 
-#### ログイン画面
+#### Login Page
 
-スマートフォン版LINEにログインしている状態の場合、認可画面へそのまま遷移するためログイン画面は表示されません。（一瞬LINEアプリへ移動し、ログイン中の表示がなされます）
+If you are logged in to the LINE app on your smartphone, you will be directed to the authorization screen, so the login page is not displayed (it briefly switches to the LINE app and shows that you are logged in).
 
-#### 認可画面
+#### Authorization Screen
 
 ![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-2.png)
 
 ### PC
 
-#### ログイン画面
+#### Login Page
 
-ブラウザのCookieに以前ログインしたLINEアカウント情報が残っている場合は、そのアカウントでログインするシングルサインオン画面が表示されます。ブラウザにそのCookieがない場合は、メールアドレスとパスワードでのログイン画面が表示されます。
+If your browser's cookies contain previously logged-in LINE account information, you will see a single sign-on screen to log in with that account. If your browser does not have those cookies, you will see the login screen for entering your email and password.
 
-##### Cookieなし（メールアドレスとパスワードでのログイン）
+##### No Cookies (Login with Email and Password)
 
 ![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image.png)
 
-##### Cookieあり（シングルサインオン）
+##### With Cookies (Single Sign-On)
 
 ![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-1.png)
 
-#### 認可画面
+#### Authorization Screen
 
 ![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-3.png)
 
-## カスタマイズ
+## Customization
 
-LINE Login設定ページより設定が行えます。
+You can configure settings through the LINE Login settings page.
 
-メッセージの内容や各種ページのURLを変更することが可能です。
+It's possible to change the content of messages and the URLs of various pages.
 
-その他複雑なカスタマイズをご希望の場合は有償で承りますので[こちら](https://blog.shipweb.jp/contact)からご連絡ください。
+For more complex customizations, we offer paid services. Please [contact us here](https://blog.shipweb.jp/contact) if you have specific customization requirements.
 
-## 必要動作環境
+## System Requirements
 
-- WordPress 4.9.13以上
+- WordPress 4.9.13 or higher
 
-## 制作者
+## Author
 
-- シップ
+- Ship
 
-## 謝辞
+## Acknowledgments
 
-- 使用してくださっている方々。
+- To all those who have used this plugin.
 
-## ライセンス
+## License
 
 - GPLv3

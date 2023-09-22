@@ -1,0 +1,576 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR SHIP
+# This file is distributed under the same license as the WP LINE Login package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: WP LINE Login \n"
+"Report-Msgid-Bugs-To: shipwebdotjp@gmail.com\n"
+"POT-Creation-Date: 2023-09-21 14:06+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: js/sll_setting.js:13
+msgid "Check All"
+msgstr ""
+
+#: js/sll_setting.js:14
+msgid "UnCheck All"
+msgstr ""
+
+#: js/sll_setting.js:16
+msgid "Select options"
+msgstr ""
+
+#: js/sll_setting.js:17
+msgid "# checked"
+msgstr ""
+
+#: include/const.php:26
+msgid "Channel"
+msgstr ""
+
+#: include/const.php:30
+msgid "Login channel ID"
+msgstr ""
+
+#: include/const.php:33
+msgid ""
+"This number is displayed on the Basic Information page of the LINE Login "
+"channel."
+msgstr ""
+
+#: include/const.php:39
+msgid "Login channel secret"
+msgstr ""
+
+#: include/const.php:48
+msgid "Messaging API Channel secret"
+msgstr ""
+
+#: include/const.php:51
+msgid ""
+"When link to LINE Connect, enter the secret of the LINE Messaging API "
+"channel."
+msgstr ""
+
+#: include/const.php:57
+msgid "Encryption Secret"
+msgstr ""
+
+#: include/const.php:60
+msgid "Secret used for cookie encryption in alphanumeric characters."
+msgstr ""
+
+#: include/const.php:67 include/const.php:322
+msgid "Page"
+msgstr ""
+
+#: include/const.php:71
+msgid "Login method"
+msgstr ""
+
+#: include/const.php:73
+msgid "Only LINE login"
+msgstr ""
+
+#: include/const.php:73
+msgid "Use both WordPress login and LINE login"
+msgstr ""
+
+#: include/const.php:75
+msgid "Only LINE login or both WordPress login and LINE login."
+msgstr ""
+
+#: include/const.php:79
+msgid "Login page"
+msgstr ""
+
+#: include/const.php:82
+msgid "Enter login page slug"
+msgstr ""
+
+#: include/const.php:86
+msgid "Sign up page"
+msgstr ""
+
+#: include/const.php:89
+msgid "Enter sign up page slug"
+msgstr ""
+
+#: include/const.php:93
+msgid "User home"
+msgstr ""
+
+#: include/const.php:96
+msgid ""
+"Slug of the page to be displayed after LINE login. If left blank, Will be "
+"redirected to the site home page."
+msgstr ""
+
+#: include/const.php:100
+msgid "User account"
+msgstr ""
+
+#: include/const.php:103
+msgid ""
+"Slug of the page to be displayed after the LINE linking has been completed. "
+"This is the page that generally displays the user's LINE linking status."
+msgstr ""
+
+#: include/const.php:107
+msgid "Line message"
+msgstr ""
+
+#: include/const.php:110
+msgid ""
+"This page is for displaying messages. Please include the short code "
+"[line_login_message]."
+msgstr ""
+
+#: include/const.php:114
+msgid "Line login"
+msgstr ""
+
+#: include/const.php:117
+msgid ""
+"This page is used for LINE login. Please create a page with this slug. No "
+"content is required."
+msgstr ""
+
+#: include/const.php:123
+msgid "Message"
+msgstr ""
+
+#: include/const.php:127
+msgid "LINE login link label"
+msgstr ""
+
+#: include/const.php:129
+msgid "LINE login"
+msgstr ""
+
+#: include/const.php:130
+msgid "Label for LINE login link."
+msgstr ""
+
+#: include/const.php:134
+msgid "Normal login link label"
+msgstr ""
+
+#: include/const.php:136
+msgid "Go to login page"
+msgstr ""
+
+#: include/const.php:137
+msgid "Label for the link to the normal login page."
+msgstr ""
+
+#: include/const.php:141
+msgid "Sign up label"
+msgstr ""
+
+#: include/const.php:143
+msgid "Go to sign up page"
+msgstr ""
+
+#: include/const.php:144
+msgid "Label for the link to the sign up page."
+msgstr ""
+
+#: include/const.php:148
+msgid "User home label"
+msgstr ""
+
+#: include/const.php:150
+msgid "Home"
+msgstr ""
+
+#: include/const.php:151
+msgid "Label for the link to the home page."
+msgstr ""
+
+#: include/const.php:155
+msgid "Account home label"
+msgstr ""
+
+#: include/const.php:157
+msgid "Go to user account page"
+msgstr ""
+
+#: include/const.php:158
+msgid "Label for the link to the user account page."
+msgstr ""
+
+#: include/const.php:162
+msgid "Login canceled message"
+msgstr ""
+
+#: include/const.php:164
+msgid "LINE login was canceled."
+msgstr ""
+
+#: include/const.php:165
+msgid ""
+"Message displayed when LINE login is canceled after redirecting to LINE "
+"login screen."
+msgstr ""
+
+#: include/const.php:170
+msgid "Authentication error message"
+msgstr ""
+
+#: include/const.php:172
+msgid "An error occurred during LINE authentication."
+msgstr ""
+
+#: include/const.php:173
+msgid "Message displayed when an error occurs during LINE authentication."
+msgstr ""
+
+#: include/const.php:178
+msgid "Linking error message"
+msgstr ""
+
+#: include/const.php:180
+msgid "An error occurred during LINE linking."
+msgstr ""
+
+#: include/const.php:181
+msgid "Message displayed when an error occurs during LINE linking."
+msgstr ""
+
+#: include/const.php:186
+msgid "User information retrieval failure message"
+msgstr ""
+
+#: include/const.php:188
+msgid "An error occurred during LINE authentication. Please try again later."
+msgstr ""
+
+#: include/const.php:189
+msgid ""
+"Message displayed when an error occurs while retrieving user information "
+"after LINE authentication."
+msgstr ""
+
+#: include/const.php:194
+msgid "LINE account duplication message"
+msgstr ""
+
+#: include/const.php:196
+msgid ""
+"This LINE account is already linked to another user. Please unlink it and "
+"try again."
+msgstr ""
+
+#: include/const.php:197
+msgid ""
+"Message displayed when a LINE account is already linked to another user."
+msgstr ""
+
+#: include/const.php:202
+msgid "WordPress account duplication message"
+msgstr ""
+
+#: include/const.php:204
+msgid ""
+"Another LINE account is already linked to this WordPress account. Please "
+"unlink it and try again."
+msgstr ""
+
+#: include/const.php:205
+msgid ""
+"Message displayed when a WordPress account is already linked to another LINE "
+"account when using direct link."
+msgstr ""
+
+#: include/const.php:210
+msgid "Already linked message"
+msgstr ""
+
+#: include/const.php:212
+msgid "This LINE account is already linked."
+msgstr ""
+
+#: include/const.php:213
+msgid ""
+"Message displayed when attempting to link an already linked LINE account."
+msgstr ""
+
+#: include/const.php:218
+msgid "Not logged in (Login link) message"
+msgstr ""
+
+#: include/const.php:220
+msgid ""
+"This LINE account is not yet linked. Linking will occur when you log in with "
+"your site username or email address and password."
+msgstr ""
+
+#: include/const.php:221
+msgid ""
+"Message displayed when a not yet linked LINE account logs in using the "
+"\"login\" mode."
+msgstr ""
+
+#: include/const.php:226
+msgid "Not logged in (Sign up link) message"
+msgstr ""
+
+#: include/const.php:228
+msgid ""
+"This LINE account is not yet linked. Linking will occur when you sign up on "
+"this site."
+msgstr ""
+
+#: include/const.php:229
+msgid ""
+"Message displayed when a not yet linked LINE account logs in using the "
+"\"sign up\" mode."
+msgstr ""
+
+#: include/const.php:234
+msgid "Linking complete message"
+msgstr ""
+
+#: include/const.php:236
+msgid "LINE linking is complete."
+msgstr ""
+
+#: include/const.php:237
+msgid "Message displayed when LINE linking is successfully completed."
+msgstr ""
+
+#: include/const.php:242
+msgid "Unlinking complete message"
+msgstr ""
+
+#: include/const.php:244
+msgid "LINE unlinking is complete."
+msgstr ""
+
+#: include/const.php:245
+msgid "Message displayed when LINE unlinking is successfully completed."
+msgstr ""
+
+#: include/const.php:250
+msgid "Linked account change message"
+msgstr ""
+
+#: include/const.php:252
+msgid "The linked LINE account has been changed."
+msgstr ""
+
+#: include/const.php:253
+msgid ""
+"Message displayed when the linked LINE account is changed to a different "
+"LINE account."
+msgstr ""
+
+#: include/const.php:258
+msgid "Not a friend message"
+msgstr ""
+
+#: include/const.php:260
+msgid "To link LINE, you need to be friends with the official LINE account."
+msgstr ""
+
+#: include/const.php:261
+msgid ""
+"Message displayed when a user who can only link friends attempts to link "
+"LINE, but they are not friends with the official LINE account."
+msgstr ""
+
+#: include/const.php:268
+msgid "Other"
+msgstr ""
+
+#: include/const.php:272
+msgid "Logging"
+msgstr ""
+
+#: include/const.php:274 include/const.php:290
+msgid "Enable"
+msgstr ""
+
+#: include/const.php:274 include/const.php:290
+msgid "Disable"
+msgstr ""
+
+#: include/const.php:276
+msgid "Setting to record logs for LINE login."
+msgstr ""
+
+#: include/const.php:280
+msgid "Log file path"
+msgstr ""
+
+#: include/const.php:283
+msgid "Path to the log file."
+msgstr ""
+
+#: include/const.php:288
+msgid "Use user-specific login link"
+msgstr ""
+
+#: include/const.php:292
+msgid ""
+"Setting to issue individual user-specific LINE login links for linking "
+"without logging in."
+msgstr ""
+
+#: include/const.php:296
+msgid "Display friend add option"
+msgstr ""
+
+#: include/const.php:298
+msgid "Do not display"
+msgstr ""
+
+#: include/const.php:298
+msgid "Display on authorization screen"
+msgstr ""
+
+#: include/const.php:298
+msgid "Display after authorization screen"
+msgstr ""
+
+#: include/const.php:300
+msgid ""
+"Setting to display options for adding the LINE official account as a friend "
+"during user login."
+msgstr ""
+
+#: include/const.php:304
+msgid "Default login method"
+msgstr ""
+
+#: include/const.php:306
+msgid "Email and password"
+msgstr ""
+
+#: include/const.php:306
+msgid "QR code"
+msgstr ""
+
+#: include/const.php:308
+msgid ""
+"Setting for the initial login method to display when automatic login is not "
+"possible."
+msgstr ""
+
+#: include/const.php:312
+msgid "Allow linking for friends only"
+msgstr ""
+
+#: include/const.php:314 linelogin.php:1006
+msgid "No"
+msgstr ""
+
+#: include/const.php:314 linelogin.php:1006
+msgid "Yes"
+msgstr ""
+
+#: include/const.php:316
+msgid "Setting to allow LINE linking only for friends of the official account."
+msgstr ""
+
+#: include/const.php:320
+msgid "Post types"
+msgstr ""
+
+#: include/const.php:322
+msgid "Post"
+msgstr ""
+
+#: include/const.php:325
+msgid ""
+"The post type to be notified. The Send LINE checkbox will appear on the edit "
+"screen of the selected post type."
+msgstr ""
+
+#: include/setting.php:16
+msgid "LINE Login Setting"
+msgstr ""
+
+#: include/setting.php:148
+msgid "Save"
+msgstr ""
+
+#: include/setting.php:182
+#, php-format
+msgid "\"%s\" is required."
+msgstr ""
+
+#: include/setting.php:185
+#, php-format
+msgid "\"%s\" is invalid."
+msgstr ""
+
+#: include/setting.php:194
+msgid "Settings saved."
+msgstr ""
+
+#: linelogin.php:789
+msgid "Unlinked to LINE"
+msgstr ""
+
+#: linelogin.php:790
+msgid "Linked to LINE"
+msgstr ""
+
+#: linelogin.php:791
+msgid "Link"
+msgstr ""
+
+#: linelogin.php:792
+msgid "Unlink"
+msgstr ""
+
+#: linelogin.php:977
+msgid "LINE Login Connect"
+msgstr ""
+
+#: linelogin.php:980
+msgid "LINE User ID"
+msgstr ""
+
+#: linelogin.php:983
+msgid "33 alphanumeric characters starting with \"U\"."
+msgstr ""
+
+#: linelogin.php:987
+msgid "LINE Display Name"
+msgstr ""
+
+#: linelogin.php:992
+msgid "LINE Profile Picture"
+msgstr ""
+
+#: linelogin.php:998
+msgid "LINE Mailaddress"
+msgstr ""
+
+#: linelogin.php:1004
+msgid "LINE Friend"
+msgstr ""
+
+#: linelogin.php:1011
+msgid "LINE Login Link"
+msgstr ""
+
+#: linelogin.php:1014
+msgid "Copy"
+msgstr ""
+
+#: linelogin.php:1016
+msgid "User can link to LINE by logging in via this link."
+msgstr ""

@@ -1,4 +1,4 @@
-
+const { __ } = wp.i18n;
 jQuery(function ($) {
     $("#stabs").tabs({ active: sll_json['active_tab'] });
     $(".sll-color-picker").each(
@@ -10,11 +10,11 @@ jQuery(function ($) {
         $(".sll-multi-select").multiselect({
             selectedList: 5,
             linkInfo: {
-                checkAll: { text: 'すべて選択', title: 'すべて選択' },
-                uncheckAll: { text: '選択解除', title: '選択解除' }
+                checkAll: { text: __('Check All', 'linelogin'), title: __('Check All', 'linelogin') },
+                uncheckAll: { text: __('UnCheck All', 'linelogin'), title: __('UnCheck All', 'linelogin') }
             },
-            noneSelectedText: "未選択",
-            selectedText: "# 個選択"
+            noneSelectedText: __('Select options', 'linelogin'),
+            selectedText: __('# checked', 'linelogin')
         });
 
     });

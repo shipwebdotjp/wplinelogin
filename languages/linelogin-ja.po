@@ -1,0 +1,613 @@
+# Japanese translations for WP LINE Login package
+# WP LINE Login パッケージに対する英訳.
+# Copyright (C) 2023 SHIP
+# This file is distributed under the same license as the WP LINE Login package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: WP LINE Login 1.3.0\n"
+"Report-Msgid-Bugs-To: shipwebdotjp@gmail.com\n"
+"POT-Creation-Date: 2023-09-21 14:06+0900\n"
+"PO-Revision-Date: 2023-09-18 21:42+0900\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: js/sll_setting.js:13
+msgid "Check All"
+msgstr "全て選択"
+
+#: js/sll_setting.js:14
+msgid "UnCheck All"
+msgstr "全て選択解除"
+
+#: js/sll_setting.js:16
+msgid "Select options"
+msgstr "未選択"
+
+#: js/sll_setting.js:17
+msgid "# checked"
+msgstr "# 個選択"
+
+#: include/const.php:26
+msgid "Channel"
+msgstr "チャネル"
+
+#: include/const.php:30
+msgid "Login channel ID"
+msgstr "ログインチャネルID"
+
+#: include/const.php:33
+msgid ""
+"This number is displayed on the Basic Information page of the LINE Login "
+"channel."
+msgstr "LINEログインチャネルの基本情報のページに記されている数字です。"
+
+#: include/const.php:39
+msgid "Login channel secret"
+msgstr "ログインチャネルシークレット"
+
+#: include/const.php:48
+msgid "Messaging API Channel secret"
+msgstr "Messaging APIチャネルシークレット"
+
+#: include/const.php:51
+msgid ""
+"When link to LINE Connect, enter the secret of the LINE Messaging API "
+"channel."
+msgstr ""
+"LINE Connectと連携する場合、LINE Messaging APIチャネルのシークレットを入力し"
+"てください。"
+
+#: include/const.php:57
+msgid "Encryption Secret"
+msgstr "暗号化シークレット"
+
+#: include/const.php:60
+msgid "Secret used for cookie encryption in alphanumeric characters."
+msgstr ""
+"Cookieの暗号化に使用するシークレットを半角英数字で適宜設定してください。"
+
+#: include/const.php:67 include/const.php:322
+msgid "Page"
+msgstr "ページ設定"
+
+#: include/const.php:71
+msgid "Login method"
+msgstr "ログイン方法"
+
+#: include/const.php:73
+msgid "Only LINE login"
+msgstr "LINEログインのみ"
+
+#: include/const.php:73
+msgid "Use both WordPress login and LINE login"
+msgstr "WordPressでのログインとLINEログインを併用"
+
+#: include/const.php:75
+msgid "Only LINE login or both WordPress login and LINE login."
+msgstr ""
+"LINEログインのみでログインさせるか、WordPressアカウントでのログインも併用する"
+"かどうかの設定です。"
+
+#: include/const.php:79
+msgid "Login page"
+msgstr "ログインページ"
+
+#: include/const.php:82
+msgid "Enter login page slug"
+msgstr "ログインページのスラッグを入力してください。"
+
+#: include/const.php:86
+msgid "Sign up page"
+msgstr "新規登録ページ"
+
+#: include/const.php:89
+msgid "Enter sign up page slug"
+msgstr "新規登録ページのスラッグを入力してください。"
+
+#: include/const.php:93
+msgid "User home"
+msgstr "ユーザーホーム"
+
+#: include/const.php:96
+msgid ""
+"Slug of the page to be displayed after LINE login. If left blank, Will be "
+"redirected to the site home page."
+msgstr ""
+"LINEログイン後に表示するページのスラッグを入力してください。空欄の場合はサイ"
+"トホームへ遷移します。"
+
+#: include/const.php:100
+msgid "User account"
+msgstr "ユーザーアカウントページ"
+
+#: include/const.php:103
+msgid ""
+"Slug of the page to be displayed after the LINE linking has been completed. "
+"This is the page that generally displays the user's LINE linking status."
+msgstr ""
+"LINE連携完了後に表示するページのスラッグを入力してください。一般的にユーザー"
+"のLINE連携状態を表示しているページです。"
+
+#: include/const.php:107
+msgid "Line message"
+msgstr "メッセージページ"
+
+#: include/const.php:110
+msgid ""
+"This page is for displaying messages. Please include the short code "
+"[line_login_message]."
+msgstr ""
+"メッセージの表示用ページです。ショートコード[line_login_message]を表示してく"
+"ださい。"
+
+#: include/const.php:114
+msgid "Line login"
+msgstr "LINEログインページ"
+
+#: include/const.php:117
+msgid ""
+"This page is used for LINE login. Please create a page with this slug. No "
+"content is required."
+msgstr ""
+"LINEログインのために使用するページです。指定したスラッグで固定ページを作成し"
+"てください。内容は必要ありません。"
+
+#: include/const.php:123
+msgid "Message"
+msgstr "メッセージ"
+
+#: include/const.php:127
+msgid "LINE login link label"
+msgstr "LINEログインリンクラベル"
+
+#: include/const.php:129
+msgid "LINE login"
+msgstr "LINEログイン"
+
+#: include/const.php:130
+msgid "Label for LINE login link."
+msgstr "LINEログインリンクのラベルです。"
+
+#: include/const.php:134
+msgid "Normal login link label"
+msgstr "通常ログインリンクラベル"
+
+#: include/const.php:136
+msgid "Go to login page"
+msgstr "ログイン画面へ"
+
+#: include/const.php:137
+msgid "Label for the link to the normal login page."
+msgstr "通常の方法でのログインページへのリンクラベルです。"
+
+#: include/const.php:141
+msgid "Sign up label"
+msgstr "新規登録ラベル"
+
+#: include/const.php:143
+msgid "Go to sign up page"
+msgstr "新規登録画面へ"
+
+#: include/const.php:144
+msgid "Label for the link to the sign up page."
+msgstr "新規登録ページへのリンクラベルです。"
+
+#: include/const.php:148
+msgid "User home label"
+msgstr "ユーザーホームラベル"
+
+#: include/const.php:150
+msgid "Home"
+msgstr "ホーム"
+
+#: include/const.php:151
+msgid "Label for the link to the home page."
+msgstr "ホームへのリンクラベルです。"
+
+#: include/const.php:155
+msgid "Account home label"
+msgstr "アカウントホームラベル"
+
+#: include/const.php:157
+msgid "Go to user account page"
+msgstr "アカウントページへ"
+
+#: include/const.php:158
+msgid "Label for the link to the user account page."
+msgstr "ユーザーアカウントページへのリンクラベルです。"
+
+#: include/const.php:162
+msgid "Login canceled message"
+msgstr "ログインキャンセル時"
+
+#: include/const.php:164
+msgid "LINE login was canceled."
+msgstr "LINEログインがキャンセルされました。"
+
+#: include/const.php:165
+msgid ""
+"Message displayed when LINE login is canceled after redirecting to LINE "
+"login screen."
+msgstr "LINEログイン画面に移行したもののキャンセルされた際のメッセージです。"
+
+#: include/const.php:170
+msgid "Authentication error message"
+msgstr "認証エラー時"
+
+#: include/const.php:172
+msgid "An error occurred during LINE authentication."
+msgstr "LINE認証中にエラーが発生しました。"
+
+#: include/const.php:173
+msgid "Message displayed when an error occurs during LINE authentication."
+msgstr "LINE認証中にエラーが発生した場合のメッセージです。"
+
+#: include/const.php:178
+msgid "Linking error message"
+msgstr "連携エラー時"
+
+#: include/const.php:180
+msgid "An error occurred during LINE linking."
+msgstr "LINE連携中にエラーが発生しました。"
+
+#: include/const.php:181
+msgid "Message displayed when an error occurs during LINE linking."
+msgstr "LINE連携中にエラーが発生した場合のメッセージです。"
+
+#: include/const.php:186
+msgid "User information retrieval failure message"
+msgstr "ユーザー情報取得失敗時"
+
+#: include/const.php:188
+msgid "An error occurred during LINE authentication. Please try again later."
+msgstr "LINE認証中にエラーが発生しました。時間をおいて再度お試しください。"
+
+#: include/const.php:189
+msgid ""
+"Message displayed when an error occurs while retrieving user information "
+"after LINE authentication."
+msgstr "LINE認証後ユーザー情報取得の際にエラーが発生した場合のメッセージです。"
+
+#: include/const.php:194
+msgid "LINE account duplication message"
+msgstr "LINEアカウント重複時"
+
+#: include/const.php:196
+msgid ""
+"This LINE account is already linked to another user. Please unlink it and "
+"try again."
+msgstr ""
+"このLINEアカウントは既に連携済みです。連係解除を行ってから再度お試しくださ"
+"い。"
+
+#: include/const.php:197
+msgid ""
+"Message displayed when a LINE account is already linked to another user."
+msgstr ""
+"LINEアカウントがすでに他のユーザーと連携されている場合のメッセージです。"
+
+#: include/const.php:202
+msgid "WordPress account duplication message"
+msgstr "WordPressアカウント重複時"
+
+#: include/const.php:204
+msgid ""
+"Another LINE account is already linked to this WordPress account. Please "
+"unlink it and try again."
+msgstr ""
+"このアカウントには既に別のLINEアカウントが連携済みです。連係解除を行ってから"
+"再度お試しください。"
+
+#: include/const.php:205
+msgid ""
+"Message displayed when a WordPress account is already linked to another LINE "
+"account when using direct link."
+msgstr ""
+"ダイレクトリンクを利用して連携しようとしたWPアカウントがすでに他のLINEアカウ"
+"ントと連携されている場合のメッセージです。"
+
+#: include/const.php:210
+msgid "Already linked message"
+msgstr "己連携時"
+
+#: include/const.php:212
+msgid "This LINE account is already linked."
+msgstr "このLINEアカウントと既に連携済みです。"
+
+#: include/const.php:213
+msgid ""
+"Message displayed when attempting to link an already linked LINE account."
+msgstr ""
+"LINE連携済みなのに同じLINEアカウントで連携しようとした場合のメッセージです。"
+
+#: include/const.php:218
+msgid "Not logged in (Login link) message"
+msgstr "未ログイン時（ログインリンク）"
+
+#: include/const.php:220
+msgid ""
+"This LINE account is not yet linked. Linking will occur when you log in with "
+"your site username or email address and password."
+msgstr ""
+"このLINEアカウントはまだ連携されていません。当サイトのユーザー名またはメール"
+"アドレスとパスワードでログインすることで連携が行われます。"
+
+#: include/const.php:221
+msgid ""
+"Message displayed when a not yet linked LINE account logs in using the "
+"\"login\" mode."
+msgstr ""
+"モード\"login\"を利用し、LINE連携されていないLINEアカウントでログインした場合"
+"のメッセージです。"
+
+#: include/const.php:226
+msgid "Not logged in (Sign up link) message"
+msgstr "未ログイン時（新規登録リンク）"
+
+#: include/const.php:228
+msgid ""
+"This LINE account is not yet linked. Linking will occur when you sign up on "
+"this site."
+msgstr ""
+"このLINEアカウントはまだ連携されていません。当サイトへ会員登録することで連携"
+"が行われます。"
+
+#: include/const.php:229
+msgid ""
+"Message displayed when a not yet linked LINE account logs in using the "
+"\"sign up\" mode."
+msgstr ""
+"モード\"register\"を利用し、LINE連携されていないLINEアカウントでログインした"
+"場合のメッセージです。"
+
+#: include/const.php:234
+msgid "Linking complete message"
+msgstr "連携完了時"
+
+#: include/const.php:236
+msgid "LINE linking is complete."
+msgstr "LINE連携が完了しました。"
+
+#: include/const.php:237
+msgid "Message displayed when LINE linking is successfully completed."
+msgstr "LINE連携が完了した際のメッセージです。"
+
+#: include/const.php:242
+msgid "Unlinking complete message"
+msgstr "連係解除時"
+
+#: include/const.php:244
+msgid "LINE unlinking is complete."
+msgstr "LINE連携を解除しました。"
+
+#: include/const.php:245
+msgid "Message displayed when LINE unlinking is successfully completed."
+msgstr "LINE連携解除が完了した際のメッセージです。"
+
+#: include/const.php:250
+msgid "Linked account change message"
+msgstr "LINEアカウント変化時"
+
+#: include/const.php:252
+msgid "The linked LINE account has been changed."
+msgstr "連携しているLINEアカウントが変更されました。"
+
+#: include/const.php:253
+msgid ""
+"Message displayed when the linked LINE account is changed to a different "
+"LINE account."
+msgstr ""
+"連携しているアカウントが別のLINEアカウントに変更された場合のメッセージです。"
+
+#: include/const.php:258
+msgid "Not a friend message"
+msgstr "友だちでない場合"
+
+#: include/const.php:260
+msgid "To link LINE, you need to be friends with the official LINE account."
+msgstr "LINE連携するにはLINE公式アカウントへの友だち登録が必要です。"
+
+#: include/const.php:261
+msgid ""
+"Message displayed when a user who can only link friends attempts to link "
+"LINE, but they are not friends with the official LINE account."
+msgstr ""
+"友だちのみ連携を許可する設定で、LINE連携しようとしたユーザーが友だちでない場"
+"合のメッセージです。"
+
+#: include/const.php:268
+msgid "Other"
+msgstr "その他"
+
+#: include/const.php:272
+msgid "Logging"
+msgstr "ログを記録"
+
+#: include/const.php:274 include/const.php:290
+msgid "Enable"
+msgstr "する"
+
+#: include/const.php:274 include/const.php:290
+msgid "Disable"
+msgstr "しない"
+
+#: include/const.php:276
+msgid "Setting to record logs for LINE login."
+msgstr "LINEログインのログを記録するかどうかの設定です。"
+
+#: include/const.php:280
+msgid "Log file path"
+msgstr "ログファイルパス"
+
+#: include/const.php:283
+msgid "Path to the log file."
+msgstr "ログファイルのパスです。"
+
+#: include/const.php:288
+msgid "Use user-specific login link"
+msgstr "ユーザー専用ログインリンクの使用"
+
+#: include/const.php:292
+msgid ""
+"Setting to issue individual user-specific LINE login links for linking "
+"without logging in."
+msgstr ""
+"個々のユーザー専用のLINEログインリンクを発行し、ログインせずに連携できるよう"
+"にするかどうかの設定です。"
+
+#: include/const.php:296
+msgid "Display friend add option"
+msgstr "友だち追加オプションの表示"
+
+#: include/const.php:298
+msgid "Do not display"
+msgstr "表示しない"
+
+#: include/const.php:298
+msgid "Display on authorization screen"
+msgstr "認可画面に表示"
+
+#: include/const.php:298
+msgid "Display after authorization screen"
+msgstr "認可画面の後に表示"
+
+#: include/const.php:300
+msgid ""
+"Setting to display options for adding the LINE official account as a friend "
+"during user login."
+msgstr ""
+"LINE公式アカウントを友だち追加するオプションをユーザーのログイン時に表示する"
+"かどうかの設定です。"
+
+#: include/const.php:304
+msgid "Default login method"
+msgstr "デフォルトのログイン方式"
+
+#: include/const.php:306
+msgid "Email and password"
+msgstr "メールアドレスとパスワード"
+
+#: include/const.php:306
+msgid "QR code"
+msgstr "QRコード"
+
+#: include/const.php:308
+msgid ""
+"Setting for the initial login method to display when automatic login is not "
+"possible."
+msgstr "自動ログインができない場合、最初に表示するログイン方法の設定です。"
+
+#: include/const.php:312
+msgid "Allow linking for friends only"
+msgstr "友だちのみ連携を許可する"
+
+#: include/const.php:314 linelogin.php:1006
+msgid "No"
+msgstr "いいえ"
+
+#: include/const.php:314 linelogin.php:1006
+msgid "Yes"
+msgstr "はい"
+
+#: include/const.php:316
+msgid "Setting to allow LINE linking only for friends of the official account."
+msgstr "LINE連携を行えるのを公式アカウントの友だちのみに設定するかどうかです。"
+
+#: include/const.php:320
+msgid "Post types"
+msgstr ""
+
+#: include/const.php:322
+msgid "Post"
+msgstr ""
+
+#: include/const.php:325
+msgid ""
+"The post type to be notified. The Send LINE checkbox will appear on the edit "
+"screen of the selected post type."
+msgstr ""
+
+#: include/setting.php:16
+msgid "LINE Login Setting"
+msgstr "LINE Login 設定"
+
+#: include/setting.php:148
+msgid "Save"
+msgstr "保存"
+
+#: include/setting.php:182
+#, php-format
+msgid "\"%s\" is required."
+msgstr "%sは必須項目です。"
+
+#: include/setting.php:185
+#, php-format
+msgid "\"%s\" is invalid."
+msgstr "%sが正しくありません。"
+
+#: include/setting.php:194
+msgid "Settings saved."
+msgstr "設定を保存しました。"
+
+#: linelogin.php:789
+msgid "Unlinked to LINE"
+msgstr "LINE 連携されていません"
+
+#: linelogin.php:790
+msgid "Linked to LINE"
+msgstr "LINE 連携済みです"
+
+#: linelogin.php:791
+msgid "Link"
+msgstr "連携"
+
+#: linelogin.php:792
+msgid "Unlink"
+msgstr "連携解除"
+
+#: linelogin.php:977
+msgid "LINE Login Connect"
+msgstr "LINEログイン連携"
+
+#: linelogin.php:980
+msgid "LINE User ID"
+msgstr "LINEユーザーID"
+
+#: linelogin.php:983
+msgid "33 alphanumeric characters starting with \"U\"."
+msgstr "Uから始まる英数字33ケタ"
+
+#: linelogin.php:987
+msgid "LINE Display Name"
+msgstr "LINE表示名"
+
+#: linelogin.php:992
+msgid "LINE Profile Picture"
+msgstr "LINEプロフィール画像"
+
+#: linelogin.php:998
+msgid "LINE Mailaddress"
+msgstr "LINE登録メールアドレス"
+
+#: linelogin.php:1004
+msgid "LINE Friend"
+msgstr "LINE友だち"
+
+#: linelogin.php:1011
+msgid "LINE Login Link"
+msgstr "LINEログインリンク"
+
+#: linelogin.php:1014
+msgid "Copy"
+msgstr "コピー"
+
+#: linelogin.php:1016
+msgid "User can link to LINE by logging in via this link."
+msgstr "このリンク経由でLINEログインを行う事で連携が行えます。"
