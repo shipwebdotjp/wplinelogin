@@ -6,3 +6,4 @@ log/
 deploy
 Makefile
 *.bak
+CHANGES.md

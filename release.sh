@@ -12,12 +12,12 @@ git status;
 read -p "Commit with this content. OK? (y/N): " yesno
 case "$yesno" in
 # yes
-[yY]*)  git commit -F CHANGELOG.md;
+[yY]*)  git commit -F CHANGES.md;
 		CULLENT_BRANCH=`git rev-parse --abbrev-ref HEAD`;
 		git push origin ${CULLENT_BRANCH};
 		git tag v${LINE_LOGIN_VERSION};
 		git push origin v${LINE_LOGIN_VERSION};
-		gh release create v${LINE_LOGIN_VERSION} -d -t "v${LINE_LOGIN_VERSION} Release" -F CHANGELOG.md;;
+		gh release create v${LINE_LOGIN_VERSION} -d -t "v${LINE_LOGIN_VERSION} Release" -F CHANGES.md;;
 # no
 *) echo "Quit." ;;
 esac

@@ -5,4 +5,4 @@ xgettext -k"__" -k"_e" -k"_n" -o languages/linelogin.pot --files-from=list --fro
 #msginit --locale=ja_JP.UTF-8 --input=languages/linelogin.pot --output=languages/linelogin-ja.po --no-translator
 
 #2回目からはmsgmerge
-msgmerge --backup=simple --suffix='.bak' --update languages/linelogin-ja.po languages/linelogin.pot
+msgmerge --backup=simple --suffix='.bak' --update --no-fuzzy-matching languages/linelogin-ja.po languages/linelogin.pot

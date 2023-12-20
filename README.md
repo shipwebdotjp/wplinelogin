@@ -21,6 +21,8 @@ LINE Login → Sign up as a new WP user → Complete linking.
 - LINE Login → WordPress Login → Link Account
 - If you are already logged in, you can link your account by going to the linking menu and selecting LINE Login → Link Account.
 - You can also link your account by using the user-specific login link → LINE Login → Link Account.
+- (If you set up automatic account creation) LINE Login → Create and link WordPress users.
+- (Use email as key is Enable) LINE Login → Link to any WordPress user with a matching email address.
 
 ### Installation Instructions
 
@@ -149,6 +151,10 @@ Status message when LINE is linked. Default is "Linked to LINE."
 
 Label for the button that appears when LINE is linked. Default is "Unlink."
 
+#### delete_button
+
+In some settings, unlinking an automatically created account may result in account deletion. This is the label for that case. Default is "Delete."
+
 #### Example
 
 ```
@@ -187,13 +193,14 @@ In addition to adding this shortcode to the LINE Login Message page (linemessage
 
 ![Login Flowchart](https://blog.shipweb.jp/wp-content/uploads/2022/01/LINE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%95%E3%83%AD%E3%83%BC-569x1024.png)
 
-## Login Redirection
+## Feartures
+### Login Redirection
 
 When you initiate LINE Login from a login page with the `redirect_to` parameter in the URL, it will redirect to the URL specified in `redirect_to` after LINE Login is completed.
 
 The flow goes as follows: Access a page that requires login while not logged in → Redirect to the login page → Perform LINE Login → Redirect to the original access destination URL.
 
-## Manual Linking by Administrators
+### Manual Linking by Administrators
 
 If you know the LINE User ID (a 33-character alphanumeric string starting with "U," not the LINE username), you can manually link a specific WordPress user to that LINE User ID.
 
@@ -201,7 +208,7 @@ To do this, open the information editing page for the WordPress user you want to
 
 You can obtain the LINE User ID from your LINE Developers account if it's your own ID. For other cases, you can obtain it using the Messaging API's webhook or, for premium or authenticated accounts, from the user list retrieval endpoint.
 
-## Direct Linking URL
+### User-specific login link
 
 To use this feature, you must have the setting **Use user-specific login link: Enabled** in other settings.
 
@@ -215,6 +222,33 @@ When a user performs LINE Login through this LINE Login link, even if they are n
   → None
 - Deactivation method for links:
   → None (You can deactivate them in bulk by setting them to "Not in use")
+
+### Auto create wp account
+
+In order to use this feature, you must set **Auto create wp account: enable** in Other Settings.
+
+When user logged in with LINE login, if there is no WordPress user linked to that LINE account, a WordPress user is automatically created and made linked. A login ID and password will be automatically created for user.
+Users cannot know the automatically created WordPress password. Therefore, users should reset their password and set a new one.
+
+In order to automatically create a WordPress account with a pre-configured email address, you must have completed an application for permission to obtain an email address for the LINE Login channel you are using from LINE Developers.
+
+You can apply by setting up a privacy policy on your site that describes the purpose of obtaining and using email addresses and submitting a screenshot of the policy.
+
+### Unlink autocreated account
+In the case of an automatically created WordPress account, unless Use email as key is enable or user has reset their password,the user does not retain the password, so if unlink, the user may not be able to log in to that WordPress account again. 
+
+- Just unlink , remain account
+This is not recommended. Because Unless Use email as key is enable or notify password when register, there will be no way to log back into a WordPress account.
+- Delete Account
+Delete the WordPress account when unlink the automatically created WordPress account. Please note that all user-generated content and other information will also be deleted.
+- Disable unlinking
+For automatically created WordPress accounts, user will not be able to unlink from their LINE account.
+
+### Use email as key
+Link to a WordPress account that matches the email address registered on LINE account.
+(User LINE login with a LINE account that is not linked to any WordPress account. Also the WordPress account is not linked any LINE account)
+
+In order to use this feature, you must have email addresses permission in your LINE Login channel.
 
 ## Screenshots
 
