@@ -4,7 +4,7 @@ This plugin is for adding the ability to log in with your LINE account to WordPr
 ## Features
 * Feature to log in to WordPress using your LINE account. Add social login functionality to Wordpress.
 * Can work with both new and existing users
-* Can integrate with LINE Connect
+* Can integrate with LINE Connect. (You need to Link Login channel and LINE Bot in LINE Developers)
 
 ## Specification
 
@@ -208,47 +208,9 @@ To do this, open the information editing page for the WordPress user you want to
 
 You can obtain the LINE User ID from your LINE Developers account if it's your own ID. For other cases, you can obtain it using the Messaging API's webhook or, for premium or authenticated accounts, from the user list retrieval endpoint.
 
-### User-specific login link
-
-To use this feature, you must have the setting **Use user-specific login link: Enabled** in other settings.
-
-You can obtain a user-specific LINE Login link from the user information editing page in the admin panel (/wp-admin/user-edit.php). You can send this link individually to users via LINE messages or other means. Users can click the link to establish a connection without entering their WordPress ID/password.
-
-When a user performs LINE Login through this LINE Login link, even if they are not logged in to WordPress, they will be linked to the logged-in LINE User.
-
-- If a LINE account that is already linked to another WordPress user logs in:
-  → The WordPress user linked to the LINE account will not change.
-- Link expiration:
-  → None
-- Deactivation method for links:
-  → None (You can deactivate them in bulk by setting them to "Not in use")
-
-### Auto create wp account
-
-In order to use this feature, you must set **Auto create wp account: enable** in Other Settings.
-
-When user logged in with LINE login, if there is no WordPress user linked to that LINE account, a WordPress user is automatically created and made linked. A login ID and password will be automatically created for user.
-Users cannot know the automatically created WordPress password. Therefore, users should reset their password and set a new one.
-
-In order to automatically create a WordPress account with a pre-configured email address, you must have completed an application for permission to obtain an email address for the LINE Login channel you are using from LINE Developers.
-
-You can apply by setting up a privacy policy on your site that describes the purpose of obtaining and using email addresses and submitting a screenshot of the policy.
-
-### Unlink autocreated account
-In the case of an automatically created WordPress account, unless Use email as key is enable or user has reset their password,the user does not retain the password, so if unlink, the user may not be able to log in to that WordPress account again. 
-
-- Just unlink , remain account
-This is not recommended. Because Unless Use email as key is enable or notify password when register, there will be no way to log back into a WordPress account.
-- Delete Account
-Delete the WordPress account when unlink the automatically created WordPress account. Please note that all user-generated content and other information will also be deleted.
-- Disable unlinking
-For automatically created WordPress accounts, user will not be able to unlink from their LINE account.
-
-### Use email as key
-Link to a WordPress account that matches the email address registered on LINE account.
-(User LINE login with a LINE account that is not linked to any WordPress account. Also the WordPress account is not linked any LINE account)
-
-In order to use this feature, you must have email addresses permission in your LINE Login channel.
+#### Integrate with WP LINE Connect
+Set Channel Secret to Messaging API secret.
+Link LINE Bot to your LINE login channel from Linked LINE Official Account setting at Add friend option in LINE Developers.
 
 ## Screenshots
 
@@ -284,11 +246,81 @@ If your browser's cookies contain previously logged-in LINE account information,
 
 ![](https://blog.shipweb.jp/wp-content/uploads/2023/01/image-3.png)
 
-## Customization
-
+## Settings
 You can configure settings through the LINE Login settings page.
 
 It's possible to change the content of messages and the URLs of various pages.
+
+### Channel
+The setting of the LINE login channel to be used.
+### Page
+The slug settings for various pages.
+### Message
+Settings for various messages.
+### Other
+
+#### Logging
+This setting determines whether logging or not.
+#### Log file path
+Setting for Log file path. 
+
+#### Auto create wp account
+
+When user logged in with LINE login, if there is no WordPress user linked to that LINE account, a WordPress user is automatically created and made linked. A login ID and password will be automatically created for user.
+Users cannot know the automatically created WordPress password. Therefore, users should reset their password and set a new one.
+
+In order to automatically create a WordPress account with a pre-configured email address, you must have completed an application for permission to obtain an email address for the LINE Login channel you are using from LINE Developers.
+
+You can apply by setting up a privacy policy on your site that describes the purpose of obtaining and using email addresses and submitting a screenshot of the policy.
+
+#### Unlink autocreated account
+In the case of an automatically created WordPress account, unless Use email as key is enable or user has reset their password,the user does not retain the password, so if unlink, the user may not be able to log in to that WordPress account again. 
+
+- Just unlink , remain account
+This is not recommended. Because Unless Use email as key is enable or notify password when register, there will be no way to log back into a WordPress account.
+- Delete Account
+Delete the WordPress account when unlink the automatically created WordPress account. Please note that all user-generated content and other information will also be deleted.
+- Disable unlinking
+For automatically created WordPress accounts, user will not be able to unlink from their LINE account.
+
+#### Use email as key
+Link to a WordPress account that matches the email address registered on LINE account.
+(User LINE login with a LINE account that is not linked to any WordPress account. Also the WordPress account is not linked any LINE account)
+
+In order to use this feature, you must have email addresses permission in your LINE Login channel.
+
+#### User-specific login link
+
+You can obtain a user-specific LINE Login link from the user information editing page in the admin panel (/wp-admin/user-edit.php). You can send this link individually to users via LINE messages or other means. Users can click the link to establish a connection without entering their WordPress ID/password.
+
+When a user performs LINE Login through this LINE Login link, even if they are not logged in to WordPress, they will be linked to the logged-in LINE User.
+
+- If a LINE account that is already linked to another WordPress user logs in:
+  → The WordPress user linked to the LINE account will not change.
+- Link expiration:
+  → None
+- Deactivation method for links:
+  → None (You can deactivate them in bulk by setting them to "Not in use")
+
+#### Display friend add option
+This setting determines whether the option to add friends to LINE official accounts is displayed when users log in to LINE, and if so, at what timing.
+For more information, please see [Add a LINE Official Account as a friend when logged in (add friend option)](https://developers.line.biz/ja/docs/line-login/link-a-bot/).
+- Do not display
+- Display on authorization screen (bot_prompt=normal)
+- Display after authorization screen (bot_prompt=aggressive)
+
+#### Default login method
+Setting for the initial login method to display when automatic login is not possible.
+
+- Email and password
+- QR Code
+
+#### Allow linking for friends only
+Setting to allow LINE linking only for friends of the official account.
+
+If the setting is to allow linking only to friends, a link between the LINE Login channel and the official LINE account (Messaging API) is required. (See the section on linking with WP LINE Connect)
+
+## Customization
 
 For more complex customizations, we offer paid services. Please [contact us here](https://blog.shipweb.jp/contact) if you have specific customization requirements.
 

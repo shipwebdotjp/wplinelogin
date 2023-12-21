@@ -14,6 +14,10 @@
 ### Security
 - 
 
+## [1.3.2]
+### Changed
+- When automatically creating an account, generate a user name based on the e-mail address.
+
 ## [1.3.1]
 ### Added
 - Auto create WordPress Account feature when LINE log in. 

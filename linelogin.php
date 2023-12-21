@@ -3,7 +3,7 @@
  * Plugin Name: WP LINE Login
  * Plugin URI: https://blog.shipweb.jp/wplinelogin/
  * Description: Add Login with LINE feature.
- * Version: 1.3.1
+ * Version: 1.3.2
  * Author: shipweb
  * Author URI: https://blog.shipweb.jp/about
  * License: GPLv3
@@ -34,7 +34,7 @@ class linelogin {
 	/**
 	 * このプラグインのバージョン
 	 */
-	const VERSION = '1.3.1';
+	const VERSION = '1.3.2';
 
 	/**
 	 * このプラグインのID：Shipweb Line Login
@@ -795,7 +795,7 @@ class linelogin {
 						}
 						if ( 'on' === $this->ini['auto_create_account'] ) {
 							// LINE Login Only Mode -> Create User & Login & Link.
-							$user_name     = self::make_user_name( $line_user_data['id'] );
+							$user_name     = self::make_user_name( $line_user_data['id'], $line_user_data['email'] ?? null );
 							$user_password = wp_generate_password( 12, false );
 							$display_name  = $line_user_data['displayName'];
 							$userdata      = array(
@@ -1210,11 +1210,25 @@ class linelogin {
 	 * @param string $user_id The LINE USER ID to create a login username from.
 	 * @return string The generated login username.
 	 */
-	public function make_user_name( $user_id ) {
-		$user_name = substr( $user_id, 2, 6 );
+	public function make_user_name( $user_id, $email ) {
+		if ( isset( $email ) ) {
+			// get before @ from email
+			$name = explode( '@', $email );
+			$name = $name[0];
+			// delete exclude alphanumeric
+			$name = preg_replace( '/[^a-zA-Z0-9]/', '', $name );
+			// check username exists
+			if ( ! username_exists( $name ) ) {
+				return $name;
+			}
+		} else {
+			$name = '';
+		}
+
+		$user_name = $name . substr( $user_id, 2, 2 );
 		$offset    = 1;
 		while ( $user_exists = username_exists( $user_name ) ) {
-			$user_name = substr( $user_id, 2 + $offset, 6 );
+			$user_name = $name . substr( $user_id, 2 + $offset, 2 );
 			++$offset;
 		}
 
