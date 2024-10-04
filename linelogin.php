@@ -3,7 +3,7 @@
  * Plugin Name: WP LINE Login
  * Plugin URI: https://blog.shipweb.jp/wplinelogin/
  * Description: Add Login with LINE feature.
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: shipweb
  * Author URI: https://blog.shipweb.jp/about
  * License: GPLv3
@@ -34,7 +34,7 @@ class linelogin {
 	/**
 	 * このプラグインのバージョン
 	 */
-	const VERSION = '1.4.1';
+	const VERSION = '1.4.2';
 
 	/**
 	 * このプラグインのID：Shipweb Line Login
@@ -646,6 +646,7 @@ class linelogin {
 							setcookie( self::COOKIE_KEY__REDIRECT_TO, '', time() - 3600, '/' ); // COKIE削除.
 						} else {
 							$redirect_to = self::get_url( 'home' );
+							self::logging( 'logged in redirect_to: ' . $redirect_to );
 						}
 					} elseif ( get_current_user_id() !== $user_id ) {
 						// ログイン済みの場合
@@ -1363,8 +1364,13 @@ class linelogin {
 	public function get_url( $type ) {
 		if ( isset( $this->ini[ $type . '_url' ] ) ) {
 			if ( rtrim( $this->ini[ $type . '_url' ], '/' ) ) {
-				$permalink = get_permalink( get_page_by_path( $this->ini[ $type . '_url' ] ) );
-				return $permalink ? $permalink : home_url();
+				$target_page = get_page_by_path( $this->ini[ $type . '_url' ] );
+				if ( $target_page ) {
+					$permalink = get_permalink( $target_page );
+					return $permalink;
+				} else {
+					return home_url();
+				}
 			} else {
 				return home_url();
 			}

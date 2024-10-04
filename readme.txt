@@ -3,7 +3,7 @@ Contributors: shipweb
 Tags: line, userid, login, 連携
 Requires at least: 4.9.13
 Tested up to: 5.8
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPL v3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 7.3
@@ -26,6 +26,9 @@ Requires PHP: 7.3
 https://blog.shipweb.jp/wplinelogin/
 
 == Changelog ==
+= 1.4.2 =
+2024-10-04 Bug fix about get redirect url.
+
 = 1.4.1 =
 2024-10-04 Bug fix about github actions.
 
