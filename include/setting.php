@@ -177,10 +177,10 @@ EOM;
 						} else {
 							$value = trim( sanitize_text_field( $_POST[ linelogin::PARAMETER_PREFIX . $option_key ] ) );
 						}
-						if ( empty( $value ) && $option_details['required'] ) {
+						if ( self::is_empty( $value ) && $option_details['required'] ) {
 							set_transient( linelogin::INVALID_PREFIX . $option_key, sprintf( __( '"%s" is required.', linelogin::PLUGIN_NAME ), $option_details['label'] ), linelogin::TRANSIENT_TIME_LIMIT );
 							$valid = false;
-						} elseif ( isset( $option_details['regex'] ) && ! empty( $value ) && ! preg_match( $option_details['regex'], $value ) ) {
+						} elseif ( isset( $option_details['regex'] ) && ! self::is_empty( $value ) && ! preg_match( $option_details['regex'], $value ) ) {
 							set_transient( linelogin::INVALID_PREFIX . $option_key, sprintf( __( '"%s" is invalid.', linelogin::PLUGIN_NAME ), $option_details['label'] ), linelogin::TRANSIENT_TIME_LIMIT );
 							$valid = false;
 						}
@@ -241,5 +241,13 @@ EOM;
 		wp_enqueue_style( linelogin::PLUGIN_PREFIX . 'admin-css', plugins_url( $setting_css, __DIR__ ), array(), filemtime( plugin_dir_path( __DIR__ ) . $setting_css ) );
 		$multiselect_css = 'css/jquery.multiselect.css';
 		wp_enqueue_style( linelogin::PLUGIN_PREFIX . 'multiselect-css', plugins_url( $multiselect_css, __DIR__ ), array(), filemtime( plugin_dir_path( __DIR__ ) . $multiselect_css ) );
+	}
+
+	static function is_empty( $var = null ) {
+		if ( empty( $var ) && 0 !== $var && '0' !== $var ) { // 論理型のfalseを取り扱う場合は、更に「&& false !== $var」を追加する
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

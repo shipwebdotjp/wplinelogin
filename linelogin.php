@@ -3,7 +3,7 @@
  * Plugin Name: WP LINE Login
  * Plugin URI: https://blog.shipweb.jp/wplinelogin/
  * Description: Add Login with LINE feature.
- * Version: 1.3.2
+ * Version: 1.4.0
  * Author: shipweb
  * Author URI: https://blog.shipweb.jp/about
  * License: GPLv3
@@ -34,7 +34,7 @@ class linelogin {
 	/**
 	 * このプラグインのバージョン
 	 */
-	const VERSION = '1.3.2';
+	const VERSION = '1.4.0';
 
 	/**
 	 * このプラグインのID：Shipweb Line Login
@@ -408,7 +408,9 @@ class linelogin {
 
 		if ( $isline_page ) {
 			if ( isset( $_SERVER['QUERY_STRING'] ) ) {
-				parse_str( sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ), $req_vars );
+				// Because of query string will be sanitize when using values in $req_vars.
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				parse_str( wp_unslash( $_SERVER['QUERY_STRING'] ), $req_vars );
 			}
 			if ( isset( $req_vars[ self::PARAMETER_KEY__MODE ] ) && self::MODE_UNLINK === $req_vars[ self::PARAMETER_KEY__MODE ] ) {
 				// 連係解除リンク.
@@ -489,6 +491,7 @@ class linelogin {
 			);
 
 			if ( ! empty( $req_vars['error'] ) ) {
+				$req_vars['error'] = sanitize_text_field( $req_vars['error'] );
 				// エラーが発生した場合.
 				$redirect_to = add_query_arg(
 					array(
@@ -522,9 +525,9 @@ class linelogin {
 				}
 				$auth_url                              = $provider->getAuthorizationUrl( $option );
 				$_SESSION[ self::SESSION_KEY__STATES ] = $provider->getState();   // Stateをセッションに保持.
-				$_SESSION['lastpage']                  = isset( $req_vars[ self::PARAMETER_KEY__MODE ] ) ? $req_vars[ self::PARAMETER_KEY__MODE ] : self::MODE_LOGIN;                   // リンク元をセッションに保持.
+				$_SESSION['lastpage']                  = isset( $req_vars[ self::PARAMETER_KEY__MODE ] ) ? sanitize_text_field( $req_vars[ self::PARAMETER_KEY__MODE ] ) : self::MODE_LOGIN;                   // リンク元をセッションに保持.
 				if ( 'on' === $this->ini['directlink'] && isset( $req_vars[ self::PARAMETER_KEY__UID ] ) ) {
-					$sll_user_login = self::decrypt( $req_vars[ self::PARAMETER_KEY__UID ], $this->ini['encrypt_password'] );
+					$sll_user_login = self::decrypt( sanitize_text_field( $req_vars[ self::PARAMETER_KEY__UID ] ), $this->ini['encrypt_password'] );
 					if ( $sll_user_login ) {
 						$_SESSION[ self::PARAMETER_KEY__UID ] = $sll_user_login;
 					}
@@ -537,8 +540,11 @@ class linelogin {
 				}
 
 				if ( isset( $ref_vars['redirect_to'] ) ) {
-					// リダイレクト先をCookieに格納.
-					setcookie( self::COOKIE_KEY__REDIRECT_TO, $ref_vars['redirect_to'], time() + 60 * 60, '/', '', true, true );   // Cookieにセット.
+					// リファラーにリダイレクト先がある場合リダイレクト先をCookieに格納.
+					setcookie( self::COOKIE_KEY__REDIRECT_TO, esc_url_raw( $ref_vars['redirect_to'] ), time() + 60 * 60, '/', '', false, true );   // Cookieにセット.
+				} elseif ( isset( $req_vars['redirect_to'] ) ) {
+					// クエリストリングにリダイレクト先がある場合リダイレクト先をCookieに格納.
+					setcookie( self::COOKIE_KEY__REDIRECT_TO, esc_url_raw( $req_vars['redirect_to'] ), time() + 60 * 60, '/', '', false, true );   // Cookieにセット.
 				} else {
 					setcookie( self::COOKIE_KEY__REDIRECT_TO, '', time() - 3600, '/' ); // COKIE削除.
 				}
@@ -564,7 +570,7 @@ class linelogin {
 				$token = $provider->getAccessToken(
 					'authorization_code',
 					array(
-						'code' => $req_vars['code'],
+						'code' => sanitize_text_field( $req_vars['code'] ),
 					)
 				);
 				self::logging( 'token: ' . $token );
@@ -842,7 +848,7 @@ class linelogin {
 						} else {
 							// 未ログインの場合はcookieにLINE IDを登録してからログインページ／登録ページへリダイレクト.
 							$encrypted_line_user_data = self::encrypt( json_encode( $line_user_data ), $this->ini['encrypt_password'] );   // LINEユーザーIDの暗号化.
-							setcookie( self::COOKIE_KEY__LINEID, $encrypted_line_user_data, time() + 60 * 60, '/', '', true, true );   // Cookieにセット.
+							setcookie( self::COOKIE_KEY__LINEID, $encrypted_line_user_data, time() + 60 * 60, '/', '', false, true );   // Cookieにセット.
 							$next_code = isset( $_SESSION['lastpage'] ) && self::MODE_LOGIN === $_SESSION['lastpage'] ? 'goto_login' : 'goto_regist';
 							$next_slug = isset( $_SESSION['lastpage'] ) && isset( self::ENDPOINTS[ $_SESSION['lastpage'] ] ) ? self::ENDPOINTS[ sanitize_text_field( wp_unslash( $_SESSION['lastpage'] ) ) ] : self::MODE_LOGIN;
 
@@ -1095,7 +1101,6 @@ class linelogin {
 		// 次の移動先リンクラベル.
 		$next_label = isset( $req_vars[ self::PARAMETER_KEY__NEXT ] ) && self::ENDPOINTS[ $req_vars[ self::PARAMETER_KEY__NEXT ] ] ? $this->ini[ self::ENDPOINTS[ $req_vars[ self::PARAMETER_KEY__NEXT ] ] . '_label' ] : '';
 
-		// $req_uri = get_query_var('pagename');
 		if ( $code ) {
 			$output  = "<div class='line-login-message {$status}'>" . ( $this->ini[ $code . '_message' ] ? esc_html( $this->ini[ $code . '_message' ] ) : '' ) . '</div>';
 			$output .= $next_slug && ! is_page( rtrim( $next_slug, '/' ) ) ? "<div class='line-login-nexturl'><a href='" . esc_url( self::get_url( $next_type ) ) . "'>" . esc_html( $next_label ) . '</a></div>' : '';
@@ -1156,7 +1161,6 @@ class linelogin {
 	public function delete_user_meta( $user_id ) {
 		delete_user_meta( $user_id, self::META_KEY__LINE );
 		delete_user_meta( $user_id, self::META_KEY__LINEPROFILE );
-		// delete_user_meta( $user_id, self::META_KEY__LINELOGIN );
 
 		if ( ! empty( $this->ini['messagingapi_channel_secret'] ) ) {
 			$secret_prefix  = substr( $this->ini['messagingapi_channel_secret'], 0, 4 );
@@ -1212,12 +1216,12 @@ class linelogin {
 	 */
 	public function make_user_name( $user_id, $email ) {
 		if ( isset( $email ) ) {
-			// get before @ from email
+			// get before @ from email.
 			$name = explode( '@', $email );
 			$name = $name[0];
-			// delete exclude alphanumeric
+			// delete exclude alphanumeric.
 			$name = preg_replace( '/[^a-zA-Z0-9]/', '', $name );
-			// check username exists
+			// check username exists.
 			if ( ! username_exists( $name ) ) {
 				return $name;
 			}
@@ -1359,7 +1363,8 @@ class linelogin {
 	public function get_url( $type ) {
 		if ( isset( $this->ini[ $type . '_url' ] ) ) {
 			if ( rtrim( $this->ini[ $type . '_url' ], '/' ) ) {
-				return get_permalink( get_page_by_path( $this->ini[ $type . '_url' ] ) );
+				$permalink = get_permalink( get_page_by_path( $this->ini[ $type . '_url' ] ) );
+				return $permalink ? $permalink : home_url();
 			} else {
 				return home_url();
 			}
