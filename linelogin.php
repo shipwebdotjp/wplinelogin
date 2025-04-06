@@ -3,7 +3,7 @@
  * Plugin Name: WP LINE Login
  * Plugin URI: https://blog.shipweb.jp/wplinelogin/
  * Description: Add Login with LINE feature.
- * Version: 1.4.2
+ * Version: 1.4.3
  * Author: shipweb
  * Author URI: https://blog.shipweb.jp/about
  * License: GPLv3
@@ -30,11 +30,11 @@ require_once plugin_dir_path( __FILE__ ) . 'include/const.php';
  * Line Login Class
  */
 class linelogin {
-
+	private static $instance;
 	/**
 	 * このプラグインのバージョン
 	 */
-	const VERSION = '1.4.2';
+	const VERSION = '1.4.3';
 
 	/**
 	 * このプラグインのID：Shipweb Line Login
@@ -214,12 +214,14 @@ class linelogin {
 	public $ini;
 
 	/**
-	 * Make instance
+	 * Get instance
 	 */
-	public static function instance() {
-		return new self();
+	public static function get_instance() {
+		if (is_null(self::$instance)) {
+			self::$instance = new self();
+		}
+		return self::$instance;
 	}
-
 
 	/**
 	 * HTMLのOPTIONタグを生成・取得
@@ -274,6 +276,12 @@ class linelogin {
 		add_action(
 			'init',
 			function () {
+				// テキストドメイン呼出し.
+				load_plugin_textdomain(self::PLUGIN_NAME, false, dirname(plugin_basename(__FILE__)) . '/languages');
+
+				// プラグイン定数の初期化処理.
+				lineloginConst::initialize();
+
 				// オプションの読み込み.
 				$this->ini = $this->get_all_options();
 
@@ -301,16 +309,12 @@ class linelogin {
 				add_action( 'show_user_profile', array( $this, 'register_line_user_id_profilebox' ) );
 				// ユーザープロフィールにLINEユーザーIDを保存.
 				add_action( 'profile_update', array( $this, 'update_line_user_id_profilebox' ) );
-				// ユーザーのMETAにLINEユーザーIDとプロフィール情報を登録(LINE Connect連携用).
+				// ユーザーのMETAにLINEユーザーIDとプロフィール情報を登録(LINE ConnectからLINE Loginへの連携用).
 				add_action( 'line_login_update_user_meta', array( $this, 'line_login_update_user_meta' ), 10, 3 );
-				// ユーザーのMETAからLINEユーザーIDとプロフィール情報を削除(LINE Connect連携用).
+				// ユーザーのMETAからLINEユーザーIDとプロフィール情報を削除(LINE ConnectからLINE Loginへの連携用).
 				add_action( 'line_login_delete_user_meta', array( $this, 'line_login_delete_user_meta' ), 10, 2 );
 			}
 		);
-		// テキストドメイン呼出し.
-		load_plugin_textdomain( self::PLUGIN_NAME, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-
-		lineloginConst::initialize();
 	}
 
 	/**
@@ -542,6 +546,8 @@ class linelogin {
 				if ( isset( $ref_vars['redirect_to'] ) ) {
 					// リファラーにリダイレクト先がある場合リダイレクト先をCookieに格納.
 					setcookie( self::COOKIE_KEY__REDIRECT_TO, esc_url_raw( $ref_vars['redirect_to'] ), time() + 60 * 60, '/', '', false, true );   // Cookieにセット.
+					self::logging( 'redirect_to: ' . esc_url_raw( $ref_vars['redirect_to'] ) );
+
 				} elseif ( isset( $req_vars['redirect_to'] ) ) {
 					// クエリストリングにリダイレクト先がある場合リダイレクト先をCookieに格納.
 					setcookie( self::COOKIE_KEY__REDIRECT_TO, esc_url_raw( $req_vars['redirect_to'] ), time() + 60 * 60, '/', '', false, true );   // Cookieにセット.
@@ -642,7 +648,7 @@ class linelogin {
 						// ログイン処理.
 						self::do_user_login( $user_id, $user );
 						if ( isset( $_COOKIE[ self::COOKIE_KEY__REDIRECT_TO ] ) ) {
-							$redirect_to = sanitize_text_field( wp_unslash( $_COOKIE[ self::COOKIE_KEY__REDIRECT_TO ] ) );
+							$redirect_to = $_COOKIE[ self::COOKIE_KEY__REDIRECT_TO ];
 							setcookie( self::COOKIE_KEY__REDIRECT_TO, '', time() - 3600, '/' ); // COKIE削除.
 						} else {
 							$redirect_to = self::get_url( 'home' );
@@ -971,7 +977,7 @@ class linelogin {
 				self::update_user_meta( $user_id, $line_user_data );
 				setcookie( self::COOKIE_KEY__LINEID, '', time() - 3600, '/' ); // COKIE削除.
 				if ( isset( $_COOKIE[ self::COOKIE_KEY__REDIRECT_TO ] ) ) {
-					$redirect_to = sanitize_text_field( wp_unslash( $_COOKIE[ self::COOKIE_KEY__REDIRECT_TO ] ) );
+					$redirect_to = $_COOKIE[ self::COOKIE_KEY__REDIRECT_TO ];
 					setcookie( self::COOKIE_KEY__REDIRECT_TO, '', time() - 3600, '/' ); // COKIE削除.
 				} else {
 					$redirect_to = add_query_arg(
@@ -1139,7 +1145,7 @@ class linelogin {
 	}
 
 	/**
-	 * ユーザーのメタデータにLINE IDをセット(Line Connect連携)
+	 * ユーザーのメタデータにLINE IDをセット(LINE ConnectからLINE Loginへの連携用)
 	 *
 	 * @param int    $user_id ユーザーID.
 	 * @param array  $line_profile_data LINE Profile Data.
@@ -1379,4 +1385,7 @@ class linelogin {
 	}
 }
 
-$GLOBALS['linelogin'] = new linelogin();
+// $GLOBALS['linelogin'] = new linelogin();
+add_action('plugins_loaded', function() {
+	linelogin::get_instance();
+});

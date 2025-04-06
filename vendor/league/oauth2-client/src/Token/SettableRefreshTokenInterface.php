@@ -12,22 +12,15 @@
  * @link https://github.com/thephpleague/oauth2-client GitHub
  */
 
-namespace League\OAuth2\Client\Tool;
+namespace League\OAuth2\Client\Token;
 
-/**
- * Provides a standard way to generate query strings.
- */
-trait QueryBuilderTrait
+interface SettableRefreshTokenInterface
 {
     /**
-     * Build a query string from an array.
+     * Sets or replaces the refresh token with the provided refresh token.
      *
-     * @param array $params
-     *
-     * @return string
+     * @param string $refreshToken
+     * @return void
      */
-    protected function buildQueryString(array $params)
-    {
-        return http_build_query($params, '', '&', \PHP_QUERY_RFC3986);
-    }
+    public function setRefreshToken($refreshToken);
 }

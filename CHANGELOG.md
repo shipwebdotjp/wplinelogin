@@ -14,6 +14,11 @@
 ### Security
 - 
 
+## [1.4.3] - 2025-04-06
+### Fixed
+- adjust load textdomain timing to avoid too early notice.
+- update league/oauth2-client library to 2.8.1
+
 ## [1.3.2]
 ### Changed
 - When automatically creating an account, generate a user name based on the e-mail address.

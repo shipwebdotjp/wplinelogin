@@ -202,10 +202,10 @@ In the following cases, the user will be redirected to the URL specified by `red
 
 #### Example
 This is the case when a site is configured to allow only logged-in users to view the site, and if the site is accessed while the user is not logged in, the user will be redirected to the login page.  
-If the login page is opened with the parameter `?redirect_to=original page URL` added to the URL of the login page, and then LINE Login is performed, the user will be redirected to the original URL of the original access page after login.
+If the login page is opened with the parameter `?redirect_to=original page URL` added to the URL of the login page, and then LINE Login is performed, the user will be redirected to the original URL of the original access page after login.  
 Accessing a page that requires login while not logged in → redirect to the login page (with the original URL given as a parameter) → LINE login → redirect to the original accessed URL.
 
-The same flow can be used when the `redirect_to` parameter is included in the query parameter of the LINE Login URL instead of the referrer as shown below, such as when the user is directly redirected to the LINE Login URL without going through the login page.
+The same flow can be used when the `redirect_to` parameter is included in the query parameter of the LINE Login URL instead of the referrer as shown below, such as when the user is directly redirected to the LINE Login URL without going through the login page.  
 `linelogin/?redirect_to=original page URL`.
 
 ### Manual Linking by Administrators
