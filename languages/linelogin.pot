@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP LINE Login \n"
 "Report-Msgid-Bugs-To: shipwebdotjp@gmail.com\n"
-"POT-Creation-Date: 2023-12-19 22:07+0900\n"
+"POT-Creation-Date: 2025-09-29 19:03+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,6 +49,12 @@ msgstr ""
 
 #: include/const.php:39
 msgid "Login channel secret"
+msgstr ""
+
+#: include/const.php:42
+msgid ""
+"This alphanumeric is displayed on the Basic Information page of the LINE "
+"Login channel."
 msgstr ""
 
 #: include/const.php:48
@@ -464,131 +470,131 @@ msgstr ""
 msgid "Logging"
 msgstr ""
 
-#: include/const.php:314 include/const.php:330 include/const.php:346
-#: include/const.php:354
+#: include/const.php:315 include/const.php:334 include/const.php:357
+#: include/const.php:368
 msgid "Enable"
 msgstr ""
 
-#: include/const.php:314 include/const.php:330 include/const.php:346
-#: include/const.php:354
+#: include/const.php:316 include/const.php:335 include/const.php:358
+#: include/const.php:369
 msgid "Disable"
 msgstr ""
 
-#: include/const.php:316
+#: include/const.php:319
 msgid "Setting to record logs for LINE login."
 msgstr ""
 
-#: include/const.php:320
+#: include/const.php:323
 msgid "Log file path"
 msgstr ""
 
-#: include/const.php:323
+#: include/const.php:326
 msgid "Path to the log file."
 msgstr ""
 
-#: include/const.php:328
+#: include/const.php:331
 msgid "Auto create wp account"
 msgstr ""
 
-#: include/const.php:332
+#: include/const.php:338
 msgid ""
 "If user log in with an unlinked LINE account, whether or not to "
 "automatically creat a WordPress account."
 msgstr ""
 
-#: include/const.php:336
+#: include/const.php:342
 msgid "Unlink autocreated account"
 msgstr ""
 
-#: include/const.php:338
+#: include/const.php:345
 msgid "Just unlink , remain account"
 msgstr ""
 
-#: include/const.php:338
+#: include/const.php:346
 msgid "Delete Account"
 msgstr ""
 
-#: include/const.php:338
+#: include/const.php:347
 msgid "Disable unlinking"
 msgstr ""
 
-#: include/const.php:340
+#: include/const.php:350
 msgid "Behavior when unlinking automatically created accounts."
 msgstr ""
 
-#: include/const.php:344
+#: include/const.php:354
 msgid "Use email as key"
 msgstr ""
 
-#: include/const.php:348
+#: include/const.php:361
 msgid ""
 "If the email addresses match, they are assumed to be the same user and "
 "linking."
 msgstr ""
 
-#: include/const.php:352
+#: include/const.php:365
 msgid "Use user-specific login link"
 msgstr ""
 
-#: include/const.php:356
+#: include/const.php:372
 msgid ""
 "Setting to issue individual user-specific LINE login links for linking "
 "without logging in."
 msgstr ""
 
-#: include/const.php:360
+#: include/const.php:376
 msgid "Display friend add option"
 msgstr ""
 
-#: include/const.php:362
+#: include/const.php:379
 msgid "Do not display"
 msgstr ""
 
-#: include/const.php:362
+#: include/const.php:380
 msgid "Display on authorization screen"
 msgstr ""
 
-#: include/const.php:362
+#: include/const.php:381
 msgid "Display after authorization screen"
 msgstr ""
 
-#: include/const.php:364
+#: include/const.php:384
 msgid ""
 "Setting to display options for adding the LINE official account as a friend "
 "during user login."
 msgstr ""
 
-#: include/const.php:368
+#: include/const.php:388
 msgid "Default login method"
 msgstr ""
 
-#: include/const.php:370
+#: include/const.php:391
 msgid "Email and password"
 msgstr ""
 
-#: include/const.php:370
+#: include/const.php:392
 msgid "QR code"
 msgstr ""
 
-#: include/const.php:372
+#: include/const.php:395
 msgid ""
 "Setting for the initial login method to display when automatic login is not "
 "possible."
 msgstr ""
 
-#: include/const.php:376
+#: include/const.php:399
 msgid "Allow linking for friends only"
 msgstr ""
 
-#: include/const.php:378 linelogin.php:1299 linelogin.php:1306
+#: include/const.php:402 linelogin.php:1321 linelogin.php:1328
 msgid "No"
 msgstr ""
 
-#: include/const.php:378 linelogin.php:1299 linelogin.php:1306
+#: include/const.php:403 linelogin.php:1321 linelogin.php:1328
 msgid "Yes"
 msgstr ""
 
-#: include/const.php:380
+#: include/const.php:406
 msgid "Setting to allow LINE linking only for friends of the official account."
 msgstr ""
 
@@ -614,66 +620,66 @@ msgstr ""
 msgid "Settings saved."
 msgstr ""
 
-#: linelogin.php:1000
+#: linelogin.php:1010
 msgid "Unlinked to LINE"
 msgstr ""
 
-#: linelogin.php:1001
+#: linelogin.php:1011
 msgid "Linked to LINE"
 msgstr ""
 
-#: linelogin.php:1002
+#: linelogin.php:1012
 msgid "Link"
 msgstr ""
 
-#: linelogin.php:1003
+#: linelogin.php:1013
 msgid "Unlink"
 msgstr ""
 
-#: linelogin.php:1004
+#: linelogin.php:1014
 msgid "Delete"
 msgstr ""
 
-#: linelogin.php:1270
+#: linelogin.php:1292
 msgid "LINE Login Connect"
 msgstr ""
 
-#: linelogin.php:1273
+#: linelogin.php:1295
 msgid "LINE User ID"
 msgstr ""
 
-#: linelogin.php:1276
+#: linelogin.php:1298
 msgid "33 alphanumeric characters starting with \"U\"."
 msgstr ""
 
-#: linelogin.php:1280
+#: linelogin.php:1302
 msgid "LINE Display Name"
 msgstr ""
 
-#: linelogin.php:1285
+#: linelogin.php:1307
 msgid "LINE Profile Picture"
 msgstr ""
 
-#: linelogin.php:1291
+#: linelogin.php:1313
 msgid "LINE Mailaddress"
 msgstr ""
 
-#: linelogin.php:1297
+#: linelogin.php:1319
 msgid "LINE Friend"
 msgstr ""
 
-#: linelogin.php:1304
+#: linelogin.php:1326
 msgid "Auto Created Account"
 msgstr ""
 
-#: linelogin.php:1312
+#: linelogin.php:1334
 msgid "LINE Login Link"
 msgstr ""
 
-#: linelogin.php:1315
+#: linelogin.php:1337
 msgid "Copy"
 msgstr ""
 
-#: linelogin.php:1317
+#: linelogin.php:1339
 msgid "User can link to LINE by logging in via this link."
 msgstr ""

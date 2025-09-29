@@ -3,7 +3,7 @@
  * Plugin Name: WP LINE Login
  * Plugin URI: https://blog.shipweb.jp/wplinelogin/
  * Description: Add Login with LINE feature.
- * Version: 1.4.3
+ * Version: 1.4.4
  * Author: shipweb
  * Author URI: https://blog.shipweb.jp/about
  * License: GPLv3
@@ -34,7 +34,7 @@ class linelogin {
 	/**
 	 * このプラグインのバージョン
 	 */
-	const VERSION = '1.4.3';
+	const VERSION = '1.4.4';
 
 	/**
 	 * このプラグインのID：Shipweb Line Login

@@ -14,6 +14,10 @@
 ### Security
 - 
 
+## [1.4.4] - 2025-09-29
+### Fixed
+- avoid dhisplay undefined variable warning
+
 ## [1.4.3] - 2025-04-06
 ### Fixed
 - adjust load textdomain timing to avoid too early notice.

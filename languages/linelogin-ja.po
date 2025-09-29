@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP LINE Login 1.3.0\n"
 "Report-Msgid-Bugs-To: shipwebdotjp@gmail.com\n"
-"POT-Creation-Date: 2023-12-19 22:07+0900\n"
+"POT-Creation-Date: 2025-09-29 19:03+0900\n"
 "PO-Revision-Date: 2023-09-18 21:42+0900\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -51,6 +51,12 @@ msgstr "LINEログインチャネルの基本情報のページに記されて�
 #: include/const.php:39
 msgid "Login channel secret"
 msgstr "ログインチャネルシークレット"
+
+#: include/const.php:42
+msgid ""
+"This alphanumeric is displayed on the Basic Information page of the LINE "
+"Login channel."
+msgstr "LINEログインチャネルの基本情報のページに記されている英数字です。"
 
 #: include/const.php:48
 msgid "Messaging API Channel secret"
@@ -507,33 +513,33 @@ msgstr "その他"
 msgid "Logging"
 msgstr "ログを記録"
 
-#: include/const.php:314 include/const.php:330 include/const.php:346
-#: include/const.php:354
+#: include/const.php:315 include/const.php:334 include/const.php:357
+#: include/const.php:368
 msgid "Enable"
 msgstr "する"
 
-#: include/const.php:314 include/const.php:330 include/const.php:346
-#: include/const.php:354
+#: include/const.php:316 include/const.php:335 include/const.php:358
+#: include/const.php:369
 msgid "Disable"
 msgstr "しない"
 
-#: include/const.php:316
+#: include/const.php:319
 msgid "Setting to record logs for LINE login."
 msgstr "LINEログインのログを記録するかどうかの設定です。"
 
-#: include/const.php:320
+#: include/const.php:323
 msgid "Log file path"
 msgstr "ログファイルパス"
 
-#: include/const.php:323
+#: include/const.php:326
 msgid "Path to the log file."
 msgstr "ログファイルのパスです。"
 
-#: include/const.php:328
+#: include/const.php:331
 msgid "Auto create wp account"
 msgstr "アカウント自動作成"
 
-#: include/const.php:332
+#: include/const.php:338
 msgid ""
 "If user log in with an unlinked LINE account, whether or not to "
 "automatically creat a WordPress account."
@@ -541,41 +547,44 @@ msgstr ""
 "連携されていないLINEアカウントでLINEログインした場合に、WordPressのアカウント"
 "を自動で作成するかどうか"
 
-#: include/const.php:336
+#: include/const.php:342
 msgid "Unlink autocreated account"
 msgstr "自動作成されたアカウントの連携解除時"
 
-#: include/const.php:338
+#: include/const.php:345
 msgid "Just unlink , remain account"
 msgstr "連携解除のみ行い、アカウントは残す"
 
-#: include/const.php:338
+#: include/const.php:346
 msgid "Delete Account"
 msgstr "アカウントを削除する"
 
-#: include/const.php:338
+#: include/const.php:347
 msgid "Disable unlinking"
 msgstr "連携解除を無効にする"
 
-#: include/const.php:340
+#: include/const.php:350
 msgid "Behavior when unlinking automatically created accounts."
 msgstr "自動作成されたアカウントを連携解除しようとしたときの動作です。"
 
-#: include/const.php:344
+#: include/const.php:354
 msgid "Use email as key"
 msgstr "メールアドレスで紐づけ"
 
-#: include/const.php:348
+#: include/const.php:361
 msgid ""
 "If the email addresses match, they are assumed to be the same user and "
 "linking."
-msgstr "WordPressユーザーのメールアドレスとLINE登録メールアドレスが一致する場合、同じユーザーとみなしてWordPressへのログイン無しで連携状態にするかどうかの設定です。"
+msgstr ""
+"WordPressユーザーのメールアドレスとLINE登録メールアドレスが一致する場合、同じ"
+"ユーザーとみなしてWordPressへのログイン無しで連携状態にするかどうかの設定で"
+"す。"
 
-#: include/const.php:352
+#: include/const.php:365
 msgid "Use user-specific login link"
 msgstr "ユーザー専用ログインリンクの使用"
 
-#: include/const.php:356
+#: include/const.php:372
 msgid ""
 "Setting to issue individual user-specific LINE login links for linking "
 "without logging in."
@@ -583,23 +592,23 @@ msgstr ""
 "個々のユーザー専用のLINEログインリンクを発行し、ログインせずに連携できるよう"
 "にするかどうかの設定です。"
 
-#: include/const.php:360
+#: include/const.php:376
 msgid "Display friend add option"
 msgstr "友だち追加オプションの表示"
 
-#: include/const.php:362
+#: include/const.php:379
 msgid "Do not display"
 msgstr "表示しない"
 
-#: include/const.php:362
+#: include/const.php:380
 msgid "Display on authorization screen"
 msgstr "認可画面に表示"
 
-#: include/const.php:362
+#: include/const.php:381
 msgid "Display after authorization screen"
 msgstr "認可画面の後に表示"
 
-#: include/const.php:364
+#: include/const.php:384
 msgid ""
 "Setting to display options for adding the LINE official account as a friend "
 "during user login."
@@ -607,37 +616,37 @@ msgstr ""
 "LINE公式アカウントを友だち追加するオプションをユーザーのログイン時に表示する"
 "かどうかの設定です。"
 
-#: include/const.php:368
+#: include/const.php:388
 msgid "Default login method"
 msgstr "デフォルトのログイン方式"
 
-#: include/const.php:370
+#: include/const.php:391
 msgid "Email and password"
 msgstr "メールアドレスとパスワード"
 
-#: include/const.php:370
+#: include/const.php:392
 msgid "QR code"
 msgstr "QRコード"
 
-#: include/const.php:372
+#: include/const.php:395
 msgid ""
 "Setting for the initial login method to display when automatic login is not "
 "possible."
 msgstr "自動ログインができない場合、最初に表示するログイン方法の設定です。"
 
-#: include/const.php:376
+#: include/const.php:399
 msgid "Allow linking for friends only"
 msgstr "友だちのみ連携を許可する"
 
-#: include/const.php:378 linelogin.php:1299 linelogin.php:1306
+#: include/const.php:402 linelogin.php:1321 linelogin.php:1328
 msgid "No"
 msgstr "いいえ"
 
-#: include/const.php:378 linelogin.php:1299 linelogin.php:1306
+#: include/const.php:403 linelogin.php:1321 linelogin.php:1328
 msgid "Yes"
 msgstr "はい"
 
-#: include/const.php:380
+#: include/const.php:406
 msgid "Setting to allow LINE linking only for friends of the official account."
 msgstr "LINE連携を行えるのを公式アカウントの友だちのみに設定するかどうかです。"
 
@@ -663,67 +672,67 @@ msgstr "%sが正しくありません。"
 msgid "Settings saved."
 msgstr "設定を保存しました。"
 
-#: linelogin.php:1000
+#: linelogin.php:1010
 msgid "Unlinked to LINE"
 msgstr "LINE 連携されていません"
 
-#: linelogin.php:1001
+#: linelogin.php:1011
 msgid "Linked to LINE"
 msgstr "LINE 連携済みです"
 
-#: linelogin.php:1002
+#: linelogin.php:1012
 msgid "Link"
 msgstr "連携"
 
-#: linelogin.php:1003
+#: linelogin.php:1013
 msgid "Unlink"
 msgstr "連携解除"
 
-#: linelogin.php:1004
+#: linelogin.php:1014
 msgid "Delete"
 msgstr ""
 
-#: linelogin.php:1270
+#: linelogin.php:1292
 msgid "LINE Login Connect"
 msgstr "LINEログイン連携"
 
-#: linelogin.php:1273
+#: linelogin.php:1295
 msgid "LINE User ID"
 msgstr "LINEユーザーID"
 
-#: linelogin.php:1276
+#: linelogin.php:1298
 msgid "33 alphanumeric characters starting with \"U\"."
 msgstr "Uから始まる英数字33ケタ"
 
-#: linelogin.php:1280
+#: linelogin.php:1302
 msgid "LINE Display Name"
 msgstr "LINE表示名"
 
-#: linelogin.php:1285
+#: linelogin.php:1307
 msgid "LINE Profile Picture"
 msgstr "LINEプロフィール画像"
 
-#: linelogin.php:1291
+#: linelogin.php:1313
 msgid "LINE Mailaddress"
 msgstr "LINE登録メールアドレス"
 
-#: linelogin.php:1297
+#: linelogin.php:1319
 msgid "LINE Friend"
 msgstr "LINE友だち"
 
-#: linelogin.php:1304
+#: linelogin.php:1326
 msgid "Auto Created Account"
 msgstr "自動作成されたアカウント"
 
-#: linelogin.php:1312
+#: linelogin.php:1334
 msgid "LINE Login Link"
 msgstr "LINEログインリンク"
 
-#: linelogin.php:1315
+#: linelogin.php:1337
 msgid "Copy"
 msgstr "コピー"
 
-#: linelogin.php:1317
+#: linelogin.php:1339
 msgid "User can link to LINE by logging in via this link."
 msgstr "このリンク経由でLINEログインを行う事で連携が行えます。"
 

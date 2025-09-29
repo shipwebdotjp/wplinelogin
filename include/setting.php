@@ -169,7 +169,7 @@ EOM;
 				$plugin_options = array();
 				foreach ( lineloginConst::$settings_option as $tab_name => $tab_details ) {
 					foreach ( $tab_details['fields'] as $option_key => $option_details ) {
-						if ( $option_details['isMulti'] ) {
+						if ( isset($option_details['isMulti']) &&$option_details['isMulti'] ) {
 							$value = $_POST[ linelogin::PARAMETER_PREFIX . $option_key ];
 							foreach ( $value as $key => $tmp ) {
 								$value[ sanitize_text_field( $key ) ] = trim( sanitize_text_field( $tmp ) );
@@ -177,7 +177,7 @@ EOM;
 						} else {
 							$value = trim( sanitize_text_field( $_POST[ linelogin::PARAMETER_PREFIX . $option_key ] ) );
 						}
-						if ( self::is_empty( $value ) && $option_details['required'] ) {
+						if ( self::is_empty( $value ) && isset($option_details['required']) && $option_details['required'] ) {
 							set_transient( linelogin::INVALID_PREFIX . $option_key, sprintf( __( '"%s" is required.', linelogin::PLUGIN_NAME ), $option_details['label'] ), linelogin::TRANSIENT_TIME_LIMIT );
 							$valid = false;
 						} elseif ( isset( $option_details['regex'] ) && ! self::is_empty( $value ) && ! preg_match( $option_details['regex'], $value ) ) {
